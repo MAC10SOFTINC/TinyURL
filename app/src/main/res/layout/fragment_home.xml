@@ -87,4 +87,6 @@
             app:icon="@drawable/ic_copy" />
     </LinearLayout>
 
+    <include layout="@layout/made_with_love"/>
+
 </RelativeLayout>

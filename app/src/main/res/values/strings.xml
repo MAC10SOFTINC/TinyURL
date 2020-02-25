@@ -6,4 +6,6 @@
 
     <string name="hint_long_url">Enter long URL here</string>
     <string name="hint_short_url">Shortened URL will be here</string>
+
+    <string name="str_developer">Developed with ❤ by chankruze</string>
 </resources>

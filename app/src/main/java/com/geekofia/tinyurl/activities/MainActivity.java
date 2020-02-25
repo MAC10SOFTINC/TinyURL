@@ -7,9 +7,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.geekofia.tinyurl.R;
@@ -21,6 +18,7 @@ public class MainActivity extends AppCompatActivity{
 
     public static final String HOME_FRAGMENT = "HOME_FRAGMENT";
     public static final String HISTORY_FRAGMENT = "HISTORY_FRAGMENT";
+    public static final String SETTINGS_FRAGMENT = "SETTINGS_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,20 +43,26 @@ public class MainActivity extends AppCompatActivity{
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {
 
         Fragment selectedFragment = null;
+        String FRAG_TAG = "";
 
         switch (menuItem.getItemId()) {
             case R.id.navigation_home:
                 selectedFragment = new HomeFragment();
+                FRAG_TAG = HOME_FRAGMENT;
                 break;
             case R.id.navigation_history:
                 selectedFragment = new HistoryFragment();
+                FRAG_TAG = HISTORY_FRAGMENT;
                 break;
             case R.id.navigation_settings:
                 selectedFragment = new HistoryFragment();
+                FRAG_TAG = SETTINGS_FRAGMENT;
                 break;
         }
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+        if (selectedFragment != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment, FRAG_TAG).commit();
+        }
 
         return true;
     };
