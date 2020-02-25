@@ -14,10 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.geekofia.tinyurl.R;
 import com.geekofia.tinyurl.models.ShortUrlProfile;
 
-public class ShortUrlAdapter extends ListAdapter<ShortUrlProfile, ShortUrlAdapter.ProfileHolder> {
+public class ShortUrlProfileAdapter extends ListAdapter<ShortUrlProfile, ShortUrlProfileAdapter.ProfileHolder> {
     private onProfileClickListener profileClickListener;
 
-    public ShortUrlAdapter() {
+    public ShortUrlProfileAdapter() {
         super(DIFF_CALLBACK);
     }
 

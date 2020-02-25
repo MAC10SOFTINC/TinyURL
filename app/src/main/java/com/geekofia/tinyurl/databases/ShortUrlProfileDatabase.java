@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.geekofia.tinyurl.interfaces.ShortUrlProfileDao;
 import com.geekofia.tinyurl.models.ShortUrlProfile;
 
-@Database(entities = {ShortUrlProfile.class}, version = 1)
+@Database(entities = {ShortUrlProfile.class}, version = 1, exportSchema = false)
 public abstract class ShortUrlProfileDatabase extends RoomDatabase {
 
     private static ShortUrlProfileDatabase instance;
