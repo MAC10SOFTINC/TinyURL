@@ -1,4 +1,6 @@
-package com.geekofia.tinyurl;
+package com.geekofia.tinyurl.interfaces;
+
+import com.geekofia.tinyurl.models.ShortUrl;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

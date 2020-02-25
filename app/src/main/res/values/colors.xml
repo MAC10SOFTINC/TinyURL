@@ -25,4 +25,6 @@
     <color name="colorTransferSheetText">#FFFFFF</color>
 
     <color name="colorCardBg">#FFFFFF</color>
+
+    <color name="textColorHeading">#5E5F73</color>
 </resources>

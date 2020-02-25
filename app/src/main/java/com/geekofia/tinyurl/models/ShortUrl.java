@@ -1,4 +1,4 @@
-package com.geekofia.tinyurl;
+package com.geekofia.tinyurl.models;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -21,7 +21,7 @@ public class ShortUrl {
 
     @Override
     public String toString() {
-        return "ShortUrl{" +
+        return "ShortUrlProfile{" +
                 "url='" + url + '\'' +
                 '}';
     }

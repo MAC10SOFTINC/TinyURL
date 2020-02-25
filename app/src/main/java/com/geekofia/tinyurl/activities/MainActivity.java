@@ -1,21 +1,37 @@
-package com.geekofia.tinyurl;
+package com.geekofia.tinyurl.activities;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.geekofia.tinyurl.R;
+import com.geekofia.tinyurl.adapters.ShortUrlAdapter;
+import com.geekofia.tinyurl.interfaces.ShortenApi;
+import com.geekofia.tinyurl.models.ShortUrl;
+import com.geekofia.tinyurl.models.ShortUrlProfile;
+import com.geekofia.tinyurl.viewmodels.ShortUrlProfileViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.List;
 import java.util.Objects;
 
 import retrofit2.Call;
@@ -31,13 +47,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Retrofit mRetrofit;
     private ShortenApi shortenApi;
     private String shortUrl;
+    private RecyclerView mRecyclerView;
+    private ShortUrlAdapter profileAdapter = new ShortUrlAdapter();
+    private ShortUrlProfileViewModel shortUrlProfileViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
+
         initViews();
+        loadConnectionProfiles();
+
         mRetrofit = initRetrofit();
         shortenApi = mRetrofit.create(ShortenApi.class);
     }
@@ -54,9 +78,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //                    Log.d("SHORT_RESPONSE", response.body().toString());
                     if (response.body() != null) {
                         shortUrl = response.body().getShortenedURL();
-                        mEditTextShortURL.setText(shortUrl);
+
+                        ShortUrlProfile shortUrlProfile = new ShortUrlProfile(shortUrl, mLongURL);
+                        mEditTextShortURL.setText(shortUrlProfile.getShortUrl());
+
                         buttonShare.setEnabled(true);
                         buttonCopy.setEnabled(true);
+
+                        shortUrlProfileViewModel.insert(shortUrlProfile);
                     }
                 } else {
                     Toast.makeText(MainActivity.this, "Response: " + response.code(), Toast.LENGTH_SHORT).show();
@@ -123,6 +152,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         buttonShorten.setOnClickListener(this);
         buttonShare.setOnClickListener(this);
         buttonCopy.setOnClickListener(this);
+
+        mRecyclerView = findViewById(R.id.recycler_view_urls);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setHasFixedSize(true);
+
+        mRecyclerView.setAdapter(profileAdapter);
     }
 
     @Override
@@ -157,5 +192,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Exit Confirmation")
+                .setMessage("Do you really want to close the app ?")
+                .setPositiveButton("Yeh", (dialog, which) -> finish())
+                .setNegativeButton("Nope", null)
+                .show();
+    }
+
+    private void loadConnectionProfiles() {
+        shortUrlProfileViewModel = new ViewModelProvider(this).get(ShortUrlProfileViewModel.class);
+        shortUrlProfileViewModel.getAllProfiles().observe(this, profiles -> {
+//                Toast.makeText(getContext(), "ON CHANGE CALLED", Toast.LENGTH_SHORT).show();
+            profileAdapter.submitList(profiles);
+        });
+
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
+
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                shortUrlProfileViewModel.delete(profileAdapter.getProfileAt(viewHolder.getAdapterPosition()));
+//                Toast.makeText(this, profileAdapter.getProfileAt(viewHolder.getAdapterPosition()).getId() + " deleted", Toast.LENGTH_SHORT).show();
+            }
+        }).attachToRecyclerView(mRecyclerView);
+
+
+        profileAdapter.setOnProfileClickListener(new ShortUrlAdapter.onProfileClickListener() {
+
+            @Override
+            public void onProfileClick(ShortUrlProfile profile) { }
+
+            @Override
+            public void onConnectClick(ShortUrlProfile profile) {
+                Toast.makeText(MainActivity.this, "Working ...", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
