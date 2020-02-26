@@ -155,14 +155,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     if (response.body() != null) {
                         shortUrl = response.body().getShortenedURL();
 
-                        ShortUrlProfile shortUrlProfile = new ShortUrlProfile(shortUrl, mLongURL);
-                        mEditTextShortURL.setText(shortUrlProfile.getShortUrl());
+                        if(shortUrl != null) {
+                            ShortUrlProfile shortUrlProfile = new ShortUrlProfile(shortUrl, mLongURL);
+                            mEditTextShortURL.setText(shortUrlProfile.getShortUrl());
 
-                        buttonShare.setEnabled(true);
-                        buttonCopy.setEnabled(true);
+                            buttonShare.setEnabled(true);
+                            buttonCopy.setEnabled(true);
 
-                        ShortUrlProfileViewModel shortUrlProfileViewModel = new ViewModelProvider(getActivity()).get(ShortUrlProfileViewModel.class);
-                        shortUrlProfileViewModel.insert(shortUrlProfile);
+                            ShortUrlProfileViewModel shortUrlProfileViewModel = new ViewModelProvider(getActivity()).get(ShortUrlProfileViewModel.class);
+                            shortUrlProfileViewModel.insert(shortUrlProfile);
+                        } else {
+                            Toast.makeText(getContext(), "Can't short this URL ;(", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 } else {
                     Toast.makeText(getContext(), "Response: " + response.code(), Toast.LENGTH_SHORT).show();

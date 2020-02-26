@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:padding="16dp"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
     <!-- Input Long URL -->
     <com.google.android.material.textfield.TextInputLayout
@@ -23,13 +23,25 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_shorten"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ti_one"
+        android:layout_alignParentEnd="true"
+        android:enabled="false"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="Shorten"
+        app:icon="@drawable/ic_shorten" />
+
     <!-- Shortened URL -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/ti_two"
-        android:layout_below="@id/ti_one"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/btn_shorten"
         android:layout_marginTop="16dp"
         android:hint="@string/hint_short_url"
         app:endIconMode="none"
@@ -45,34 +57,20 @@
             android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <LinearLayout
-        android:layout_below="@id/ti_two"
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_shorten"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:enabled="false"
-            android:paddingTop="8dp"
-            android:paddingBottom="8dp"
-            android:text="Shorten"
-            app:icon="@drawable/ic_shorten" />
+        android:layout_below="@id/ti_two"
+        android:layout_alignParentEnd="true">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_share"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:enabled="false"
             android:paddingTop="8dp"
-            android:text="share"
             android:paddingBottom="8dp"
+            android:text="share"
             app:icon="@drawable/ic_share" />
 
         <com.google.android.material.button.MaterialButton
@@ -80,13 +78,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_toEndOf="@id/btn_share"
             android:enabled="false"
-            android:text="copy"
             android:paddingTop="8dp"
             android:paddingBottom="8dp"
+            android:text="copy"
             app:icon="@drawable/ic_copy" />
-    </LinearLayout>
 
-    <include layout="@layout/made_with_love"/>
+    </RelativeLayout>
+
+    <include layout="@layout/made_with_love" />
 
 </RelativeLayout>

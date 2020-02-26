@@ -2,12 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_urls"
-        tools:listitem="@layout/short_profile"
+        tools:listitem="@layout/item_short_url_profile"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

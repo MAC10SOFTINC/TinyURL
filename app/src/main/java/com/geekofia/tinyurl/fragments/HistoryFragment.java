@@ -1,5 +1,8 @@
 package com.geekofia.tinyurl.fragments;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,8 +61,10 @@ public class HistoryFragment extends Fragment {
 
             @Override
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-                shortUrlProfileViewModel.delete(shortUrlProfileAdapter.getProfileAt(viewHolder.getAdapterPosition()));
-//                Toast.makeText(this, profileAdapter.getProfileAt(viewHolder.getAdapterPosition()).getId() + " deleted", Toast.LENGTH_SHORT).show();
+                ShortUrlProfile shortUrlProfile = shortUrlProfileAdapter.getProfileAt(viewHolder.getAdapterPosition());
+
+                shortUrlProfileViewModel.delete(shortUrlProfile);
+                Toast.makeText(getContext(), shortUrlProfile.getShortUrl() + " deleted from history", Toast.LENGTH_SHORT).show();
             }
         }).attachToRecyclerView(mRecyclerView);
 
@@ -67,11 +72,23 @@ public class HistoryFragment extends Fragment {
         shortUrlProfileAdapter.setOnProfileClickListener(new ShortUrlProfileAdapter.onProfileClickListener() {
 
             @Override
-            public void onProfileClick(ShortUrlProfile profile) { }
+            public void onProfileClick(ShortUrlProfile profile) {}
 
             @Override
             public void onConnectClick(ShortUrlProfile profile) {
-                Toast.makeText(getContext(), "Working ...", Toast.LENGTH_SHORT).show();
+                String shortUrl = profile.getShortUrl();
+
+                // Gets a handle to the clipboard service.
+                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
+
+                // Creates a new text clip to put on the clipboard
+                ClipData clip = ClipData.newPlainText("Shortened URL", shortUrl);
+
+                // Set the clipboard's primary clip.
+                if (clipboard != null) {
+                    clipboard.setPrimaryClip(clip);
+                    Toast.makeText(getContext(), "Copied: " + shortUrl, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

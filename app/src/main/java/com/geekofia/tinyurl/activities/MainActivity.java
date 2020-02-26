@@ -54,10 +54,6 @@ public class MainActivity extends AppCompatActivity{
                 selectedFragment = new HistoryFragment();
                 FRAG_TAG = HISTORY_FRAGMENT;
                 break;
-            case R.id.navigation_settings:
-                selectedFragment = new HistoryFragment();
-                FRAG_TAG = SETTINGS_FRAGMENT;
-                break;
         }
 
         if (selectedFragment != null) {

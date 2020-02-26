@@ -39,7 +39,7 @@ public class ShortUrlProfileAdapter extends ListAdapter<ShortUrlProfile, ShortUr
     @NonNull
     @Override
     public ProfileHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.short_profile, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_short_url_profile, parent, false);
         return new ProfileHolder(view);
     }
 

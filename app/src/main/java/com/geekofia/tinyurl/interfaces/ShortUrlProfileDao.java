@@ -26,6 +26,6 @@ public interface ShortUrlProfileDao {
     @Query("DELETE FROM short_urls_table")
     void deleteAllProfiles();
 
-    @Query("SELECT * FROM short_urls_table ORDER BY id ASC")
+    @Query("SELECT * FROM short_urls_table ORDER BY id DESC")
     LiveData<List<ShortUrlProfile>> getAllProfiles();
 }

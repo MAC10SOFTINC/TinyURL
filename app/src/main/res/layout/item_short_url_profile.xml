@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/card_option_connections"
+    style="@style/CardShortUrlProfile">
+
+    <LinearLayout style="@style/CardMainOptionLinearLayout">
+
+        <LinearLayout style="@style/CardMainOptionInnerLinearLayout">
+
+            <TextView
+                android:id="@+id/tv_short_url"
+                style="@style/CardMainOptionTitle" />
+
+            <TextView
+                android:id="@+id/tv_long_url"
+                style="@style/CardMainOptionDescription" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_copy"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="copy"
+            android:textColor="@color/colorButtonConnect" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
