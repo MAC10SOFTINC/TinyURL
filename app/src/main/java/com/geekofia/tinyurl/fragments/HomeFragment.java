@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +16,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.geekofia.tinyurl.R;
+import com.geekofia.tinyurl.activities.MainActivity;
 import com.geekofia.tinyurl.interfaces.ShortenApi;
 import com.geekofia.tinyurl.models.ShortUrl;
 import com.geekofia.tinyurl.models.ShortUrlProfile;
+import com.geekofia.tinyurl.repositories.ShortUrlProfileRepo;
 import com.geekofia.tinyurl.viewmodels.ShortUrlProfileViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
@@ -33,25 +37,39 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.geekofia.tinyurl.activities.MainActivity.HISTORY_FRAGMENT;
+
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private TextInputEditText mEditTextLongURL, mEditTextShortURL;
     private MaterialButton buttonShorten, buttonShare, buttonCopy;
-    private Retrofit mRetrofit;
     private ShortenApi shortenApi;
-    private String shortUrl;
+    private String longUrl, shortUrl;
+    private ShortUrlProfileRepo profileRepository;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        Bundle bundle = this.getArguments();
 
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
         initViews(view);
 
-        mRetrofit = initRetrofit();
+        Retrofit mRetrofit = initRetrofit();
         shortenApi = mRetrofit.create(ShortenApi.class);
 
+        if (bundle != null) {
+            longUrl = bundle.getString("LONG_URL");
+            getShortUrl();
+        }
+
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        profileRepository = new ShortUrlProfileRepo(getActivity().getApplication());
     }
 
     private Retrofit initRetrofit() {
@@ -143,9 +161,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getShortUrl() {
-        String mLongURL = Objects.requireNonNull(mEditTextLongURL.getText()).toString();
+        if (longUrl == null) {
+            longUrl = Objects.requireNonNull(mEditTextLongURL.getText()).toString();
+        }
 
-        Call<ShortUrl> shortUrlCall = shortenApi.getShortURL("json", mLongURL);
+        Call<ShortUrl> shortUrlCall = shortenApi.getShortURL("json", longUrl);
 
         shortUrlCall.enqueue(new Callback<ShortUrl>() {
             @Override
@@ -156,14 +176,13 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         shortUrl = response.body().getShortenedURL();
 
                         if(shortUrl != null) {
-                            ShortUrlProfile shortUrlProfile = new ShortUrlProfile(shortUrl, mLongURL);
+                            ShortUrlProfile shortUrlProfile = new ShortUrlProfile(shortUrl, longUrl);
                             mEditTextShortURL.setText(shortUrlProfile.getShortUrl());
 
                             buttonShare.setEnabled(true);
                             buttonCopy.setEnabled(true);
 
-                            ShortUrlProfileViewModel shortUrlProfileViewModel = new ViewModelProvider(getActivity()).get(ShortUrlProfileViewModel.class);
-                            shortUrlProfileViewModel.insert(shortUrlProfile);
+                            profileRepository.insert(shortUrlProfile);
                         } else {
                             Toast.makeText(getContext(), "Can't short this URL ;(", Toast.LENGTH_SHORT).show();
                         }
