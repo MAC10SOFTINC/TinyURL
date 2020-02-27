@@ -21,26 +21,10 @@
 
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://www.paypal.me/ANUSHEK" />
+                android:data="https://www.paypal.me/chankruze" />
         </Preference>
 
     </PreferenceCategory>
-
-    <!--    <PreferenceCategory-->
-    <!--        android:key="support_category"-->
-    <!--        android:title="@string/support_category_title">-->
-
-    <!--        <Preference-->
-    <!--            android:icon="@drawable/ic_support"-->
-    <!--            android:summary="@string/developers_chankruze"-->
-    <!--            android:title="Chandan Kumar Mandal (chankruze)" />-->
-
-    <!--        <Preference-->
-    <!--            android:icon="@drawable/ic_support"-->
-    <!--            android:summary="@string/support_harsh"-->
-    <!--            android:title="Harsh Kumar (Apkharsh)" />-->
-
-    <!--    </PreferenceCategory>-->
 
     <PreferenceCategory
         android:key="links"
@@ -61,6 +45,7 @@
             android:key="telegram"
             android:summary="@string/telegram_summary"
             android:title="@string/telegram_title">
+
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://t.me/geekofia" />
@@ -71,6 +56,7 @@
             android:key="discord"
             android:summary="@string/discord_summary"
             android:title="@string/discord_title">
+
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://discord.gg/uNKRMua" />
@@ -81,41 +67,22 @@
             android:key="donate"
             android:summary="@string/donate_summary"
             android:title="@string/donate">
+
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://www.paypal.me/chankruze" />
         </Preference>
-
-        <!--        <Preference-->
-        <!--            android:icon="@drawable/ic_changelog"-->
-        <!--            android:key="changelog"-->
-        <!--            android:summary="@string/changelog_title_summary"-->
-        <!--            android:title="@string/changelog_title">-->
-
-        <!--            <intent-->
-        <!--                android:action="android.intent.action.VIEW"-->
-        <!--                android:data="https://github.com/chankruze/TinyURL/commits/master" />-->
-        <!--        </Preference>-->
 
         <Preference
             android:icon="@drawable/ic_website"
             android:key="website"
             android:summary="@string/website_title_summary"
             android:title="@string/website_title">
+
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="https://geekofia.in/" />
         </Preference>
-
-        <!--        <Preference-->
-        <!--            android:icon="@drawable/ic_github"-->
-        <!--            android:key="source"-->
-        <!--            android:summary="@string/source_summary"-->
-        <!--            android:title="@string/source_title">-->
-        <!--            <intent-->
-        <!--                android:action="android.intent.action.VIEW"-->
-        <!--                android:data="https://github.com/chankruze/TinyURL" />-->
-        <!--        </Preference>-->
 
         <Preference
             android:icon="@drawable/ic_rate"

@@ -17,7 +17,7 @@
     <color name="colorTextPrimaryProfile">@color/colorTextPrimary</color>
     <color name="colorTextSecondaryProfile">@color/colorTextSecondary</color>
 
-    <color name="colorButtonConnect">#43A047</color>
+    <color name="colorButtonCopy">#43A047</color>
 
     <color name="colorTransferSheetBg">#3C4556</color>
     <color name="colorTransferSheetText">#FFFFFF</color>

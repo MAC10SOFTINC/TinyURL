@@ -15,26 +15,17 @@
     <string name="developers_title">Developers</string>
     <string name="developers_chankruze" translatable="false">• Co-Founder \n• Core Developer \n• UI/UX Designer</string>
 
-    <string name="support_category_title">Support Team</string>
-    <string name="support_harsh">• Community Admin\n• Good Boi</string>
-
     <string name="about_title">About</string>
     <string name="links_title">Links</string>
 
     <string name="announcements_title">Announcements</string>
     <string name="announcements_summary">Official announcements channel</string>
 
-    <string name="changelog_title">Changelog</string>
-    <string name="changelog_title_summary">View recent changes in app</string>
-
     <string name="telegram_title">Telegram</string>
     <string name="telegram_summary">Official telegram group for support</string>
 
     <string name="discord_title">Discord</string>
     <string name="discord_summary">Official discord server for support</string>
-
-    <string name="source_title">Github</string>
-    <string name="source_summary">TinyURL source code under GPL v3</string>
 
     <string name="donate">Donate</string>
     <string name="donate_summary">Show your support to chankruze</string>
