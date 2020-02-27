@@ -12,28 +12,28 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/colorToolbar"
+        android:background="@android:color/transparent"
         android:theme="@style/ThemeOverlay.AppCompat.DayNight.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
         <TextView
-            style="@style/TextAppearance.AppCompat.Headline"
-            android:textFontWeight="600"
-            android:layout_gravity="center"
             android:id="@+id/toolbar_title"
+            style="@style/TextAppearance.AppCompat.Headline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"/>
+            android:layout_gravity="center"
+            android:background="@null"
+            android:text="@string/app_name"
+            android:textFontWeight="600" />
 
     </androidx.appcompat.widget.Toolbar>
 
     <FrameLayout
-        android:layout_below="@id/toolbar"
         android:id="@+id/fragment_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottom_navigation">
-    </FrameLayout>
+        android:layout_above="@id/bottom_navigation"
+        android:layout_below="@id/toolbar" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
@@ -41,10 +41,12 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="?android:attr/windowBackground"
+        android:elevation="16dp"
+        app:itemRippleColor="@color/colorPrimary"
+        app:labelVisibilityMode="selected"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:elevation="8dp"
         app:menu="@menu/navigation" />
 
 </RelativeLayout>

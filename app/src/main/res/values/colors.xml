@@ -11,8 +11,6 @@
     <color name="colorFileIconTorrent">#4CAF50</color>
 
     <color name="colorGray">#5E5F73</color>
-    <color name="colorToolbar">@color/colorDarkBg</color>
-    <!--    <color name="colorToolbar">#FDD835</color>-->
 
     <color name="colorDarkBg">#FFFFFF</color>
 

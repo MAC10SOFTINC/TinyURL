@@ -7,8 +7,10 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.geekofia.tinyurl.R;
+import com.geekofia.tinyurl.fragments.AboutFragment;
 import com.geekofia.tinyurl.fragments.HistoryFragment;
 import com.geekofia.tinyurl.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -19,10 +21,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String HOME_FRAGMENT = "HOME_FRAGMENT";
     public static final String HISTORY_FRAGMENT = "HISTORY_FRAGMENT";
+    public static final String ABOUT_FRAGMENT = "ABOUT_FRAGMENT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
+
         setContentView(R.layout.activity_main);
 
         Intent receivedIntent = getIntent();
@@ -74,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
             case R.id.navigation_history:
                 selectedFragment = new HistoryFragment();
                 FRAG_TAG = HISTORY_FRAGMENT;
+                break;
+            case R.id.navigation_about:
+                selectedFragment = new AboutFragment();
+                FRAG_TAG = ABOUT_FRAGMENT;
                 break;
         }
 

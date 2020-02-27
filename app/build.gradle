@@ -23,6 +23,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    applicationVariants.all { variant ->
+        variant.resValue "string", "versionName", variant.versionName
+        variant.resValue "string", "versionCode", String.valueOf(variant.versionCode)
+    }
 }
 
 dependencies {
@@ -48,6 +53,9 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'com.github.hotchemi:android-rate:1.0.1'
+
+    implementation 'androidx.preference:preference:1.1.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
