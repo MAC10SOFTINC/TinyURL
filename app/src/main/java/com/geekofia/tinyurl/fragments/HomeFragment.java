@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.geekofia.tinyurl.R;
-import com.geekofia.tinyurl.activities.MainActivity;
 import com.geekofia.tinyurl.interfaces.ShortenApi;
 import com.geekofia.tinyurl.models.ShortUrl;
 import com.geekofia.tinyurl.models.ShortUrlProfile;
 import com.geekofia.tinyurl.repositories.ShortUrlProfileRepo;
-import com.geekofia.tinyurl.viewmodels.ShortUrlProfileViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -36,8 +31,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static com.geekofia.tinyurl.activities.MainActivity.HISTORY_FRAGMENT;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -60,8 +53,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
         if (bundle != null) {
             longUrl = bundle.getString("LONG_URL");
-            getShortUrl();
+//            getShortUrl();
+            mEditTextLongURL.setText(longUrl);
         }
+
+        initViews(view);
 
         return view;
     }

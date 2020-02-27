@@ -4,7 +4,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +13,9 @@ import com.geekofia.tinyurl.fragments.HistoryFragment;
 import com.geekofia.tinyurl.fragments.HomeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity{
+import hotchemi.android.rate.AppRate;
+
+public class MainActivity extends AppCompatActivity {
 
     public static final String HOME_FRAGMENT = "HOME_FRAGMENT";
     public static final String HISTORY_FRAGMENT = "HISTORY_FRAGMENT";
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity{
                 if (receivedType.startsWith("text/")) {
                     String longUrl = receivedIntent.getStringExtra(Intent.EXTRA_TEXT);
 
-                    if (longUrl != null){
+                    if (longUrl != null) {
                         HomeFragment homeFragment = new HomeFragment();
 
                         Bundle bundle = new Bundle();
@@ -47,6 +48,9 @@ public class MainActivity extends AppCompatActivity{
                 break;
             //app has been launched directly, not from share list
             case Intent.ACTION_MAIN:
+                HomeFragment homeFragment = new HomeFragment();
+                getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment, HOME_FRAGMENT).commit();
                 break;
         }
 
@@ -54,12 +58,7 @@ public class MainActivity extends AppCompatActivity{
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
         initViews();
-
-        if (savedInstanceState == null) {
-            HomeFragment homeFragment = new HomeFragment();
-            getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment, HOME_FRAGMENT).commit();
-        }
+        showRateApp();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener = menuItem -> {
@@ -85,7 +84,8 @@ public class MainActivity extends AppCompatActivity{
         return true;
     };
 
-    private void initViews() {}
+    private void initViews() {
+    }
 
 
     @Override
@@ -98,5 +98,13 @@ public class MainActivity extends AppCompatActivity{
                 .show();
     }
 
+    private void showRateApp() {
+        AppRate.with(this)
+                .setInstallDays(1)
+                .setLaunchTimes(3)
+                .setRemindInterval(2)
+                .monitor();
 
+        AppRate.showRateDialogIfMeetsConditions(this);
+    }
 }
