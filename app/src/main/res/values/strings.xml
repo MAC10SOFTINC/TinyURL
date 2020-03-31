@@ -13,7 +13,7 @@
     <string name="version_title">App</string>
 
     <string name="developers_title">Developers</string>
-    <string name="developers_chankruze" translatable="false">• Co-Founder \n• Core Developer \n• UI/UX Designer</string>
+    <string name="developers_chankruze" translatable="false">• Founder \n• Core Developer \n• UI/UX Designer</string>
 
     <string name="about_title">About</string>
     <string name="links_title">Links</string>
@@ -28,7 +28,7 @@
     <string name="discord_summary">Official discord server for support</string>
 
     <string name="donate">Donate</string>
-    <string name="donate_summary">Show your support to chankruze</string>
+    <string name="donate_summary">Show your support to chankruze \nUPI Address: chankruze@oksbi</string>
 
     <string name="website_title">Website</string>
     <string name="website_title_summary">Visit my website for more</string>
@@ -38,4 +38,10 @@
 
     <string name="explore_title">Explore</string>
     <string name="explore_summary">Try my other apps</string>
+
+    <string name="str_share">share</string>
+    <string name="str_copy">copy</string>
+    <string name="str_shorten">shorten</string>
+
+    <string name="hint_delete">swipe any card LEFT (←) to delete it from history</string>
 </resources>

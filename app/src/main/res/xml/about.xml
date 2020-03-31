@@ -21,7 +21,7 @@
 
             <intent
                 android:action="android.intent.action.VIEW"
-                android:data="https://www.paypal.me/chankruze" />
+                android:data="https://github.com/chankruze" />
         </Preference>
 
     </PreferenceCategory>

@@ -39,7 +39,7 @@ public class ShortUrlProfileAdapter extends ListAdapter<ShortUrlProfile, ShortUr
     @NonNull
     @Override
     public ProfileHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_short_url_profile, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.short_url_profile, parent, false);
         return new ProfileHolder(view);
     }
 
@@ -62,7 +62,7 @@ public class ShortUrlProfileAdapter extends ListAdapter<ShortUrlProfile, ShortUr
             super(itemView);
             tvShortUrl = itemView.findViewById(R.id.tv_short_url);
             tvLongUrl = itemView.findViewById(R.id.tv_long_url);
-            Button connectButton = itemView.findViewById(R.id.btn_copy);
+//            Button connectButton = itemView.findViewById(R.id.btn_copy);
 
             itemView.setOnClickListener(v -> {
                 int position = getAdapterPosition();
@@ -71,18 +71,18 @@ public class ShortUrlProfileAdapter extends ListAdapter<ShortUrlProfile, ShortUr
                 }
             });
 
-            connectButton.setOnClickListener(v -> {
-                int position = getAdapterPosition();
-                if (profileClickListener != null && position != RecyclerView.NO_POSITION) {
-                    profileClickListener.onConnectClick(getItem(position));
-                }
-            });
+//            connectButton.setOnClickListener(v -> {
+//                int position = getAdapterPosition();
+//                if (profileClickListener != null && position != RecyclerView.NO_POSITION) {
+//                    profileClickListener.onButtonClick(getItem(position));
+//                }
+//            });
         }
     }
 
     public interface onProfileClickListener {
         void onProfileClick(ShortUrlProfile profile);
-        void onConnectClick(ShortUrlProfile profile);
+//        void onButtonClick(ShortUrlProfile profile);
     }
 
     public void setOnProfileClickListener(onProfileClickListener profileClickListener) {

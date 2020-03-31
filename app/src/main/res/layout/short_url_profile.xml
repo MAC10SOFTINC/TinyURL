@@ -16,13 +16,13 @@
                 style="@style/CardMainOptionDescription" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_copy"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="copy"
-            android:textColor="@color/colorButtonCopy" />
+<!--        <Button-->
+<!--            android:id="@+id/btn_copy"-->
+<!--            style="@style/Widget.MaterialComponents.Button.TextButton"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="copy"-->
+<!--            android:textColor="@color/colorButtonCopy" />-->
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
