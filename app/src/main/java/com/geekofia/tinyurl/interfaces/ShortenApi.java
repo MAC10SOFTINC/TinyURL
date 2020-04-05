@@ -10,4 +10,7 @@ public interface ShortenApi {
 
     @GET("create.php")
     Call<ShortUrl> getShortURL(@Query("format") String format, @Query("url") String url);
+
+    @GET("create.php")
+    Call<ShortUrl> getShortURLStats(@Query("format") String format, @Query("url") String url, @Query("logstats") int statsEnabled);
 }

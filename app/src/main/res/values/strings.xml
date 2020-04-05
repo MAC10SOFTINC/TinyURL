@@ -44,4 +44,7 @@
     <string name="str_shorten">shorten</string>
 
     <string name="hint_delete">swipe any card LEFT (←) to delete it from history</string>
+
+    <string name="str_stats">Enable statistics</string>
+    <string name="str_btn_stats">statistics</string>
 </resources>

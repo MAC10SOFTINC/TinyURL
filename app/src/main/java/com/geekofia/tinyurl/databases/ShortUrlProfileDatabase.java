@@ -12,7 +12,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import com.geekofia.tinyurl.interfaces.ShortUrlProfileDao;
 import com.geekofia.tinyurl.models.ShortUrlProfile;
 
-@Database(entities = {ShortUrlProfile.class}, version = 1, exportSchema = false)
+@Database(entities = {ShortUrlProfile.class}, version = 2, exportSchema = false)
 public abstract class ShortUrlProfileDatabase extends RoomDatabase {
 
     private static ShortUrlProfileDatabase instance;
@@ -48,9 +48,9 @@ public abstract class ShortUrlProfileDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            profileDao.insert(new ShortUrlProfile("https://is.gd/dsUwVY", "https://google.com"));
-            profileDao.insert(new ShortUrlProfile("https://is.gd/dPPJw2",  "https://youtu.be/WFr2WgN9_xE"));
-            profileDao.insert(new ShortUrlProfile("https://is.gd/lPDjQA",  "https://blog.geekofia.in/ctf/2019/12/28/inferno-ctf-writeup.html"));
+            profileDao.insert(new ShortUrlProfile("https://is.gd/dsUwVY", "https://google.com", false));
+            profileDao.insert(new ShortUrlProfile("https://is.gd/dPPJw2",  "https://youtu.be/WFr2WgN9_xE", false));
+            profileDao.insert(new ShortUrlProfile("https://is.gd/lPDjQA",  "https://blog.geekofia.in/ctf/2019/12/28/inferno-ctf-writeup.html", false));
             return null;
         }
     }

@@ -10,12 +10,13 @@ public class ShortUrlProfile {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     private int id;
-
     private String shortUrl, longUrl;
+    private boolean statsEnabled;
 
-    public ShortUrlProfile(String shortUrl, String longUrl) {
+    public ShortUrlProfile(String shortUrl, String longUrl, boolean statsEnabled) {
         this.shortUrl = shortUrl;
         this.longUrl = longUrl;
+        this.statsEnabled = statsEnabled;
     }
 
     public int getId() {
@@ -30,15 +31,17 @@ public class ShortUrlProfile {
         return longUrl;
     }
 
+    public boolean isStatsEnabled() {return statsEnabled; }
+
     public void setId(int id) {
         this.id = id;
     }
 
-    public void setShortUrl(String shortUrl) {
-        this.shortUrl = shortUrl;
-    }
-
-    public void setLongUrl(String longUrl) {
-        this.longUrl = longUrl;
-    }
+//    public void setShortUrl(String shortUrl) {
+//        this.shortUrl = shortUrl;
+//    }
+//
+//    public void setLongUrl(String longUrl) {
+//        this.longUrl = longUrl;
+//    }
 }

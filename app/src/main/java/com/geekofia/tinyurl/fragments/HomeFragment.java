@@ -22,6 +22,7 @@ import com.geekofia.tinyurl.models.ShortUrl;
 import com.geekofia.tinyurl.models.ShortUrlProfile;
 import com.geekofia.tinyurl.repositories.ShortUrlProfileRepo;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
@@ -39,6 +40,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ShortenApi shortenApi;
     private String longUrl, shortUrl;
     private ShortUrlProfileRepo profileRepository;
+    private MaterialCheckBox statsCheckBox;
 
     @Nullable
     @Override
@@ -75,7 +77,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 .build();
     }
 
-
     private void initViews(View view) {
         mEditTextLongURL = view.getRootView().findViewById(R.id.edit_text_long_url);
         mEditTextShortURL = view.getRootView().findViewById(R.id.edit_text_short_url);
@@ -99,7 +100,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
 
                 String url = s.toString().trim();
-                if (url.startsWith("is.gd") || url.contains("https://is.gd") || url.contains("https://is.gd/")){
+                if (url.startsWith("is.gd") || url.contains("https://is.gd") || url.contains("https://is.gd/")) {
                     buttonShorten.setEnabled(false);
                     buttonShare.setEnabled(false);
                     buttonCopy.setEnabled(false);
@@ -114,6 +115,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
 
+        statsCheckBox = view.getRootView().findViewById(R.id.check_stats);
         buttonShorten = view.getRootView().findViewById(R.id.btn_shorten);
         buttonShare = view.getRootView().findViewById(R.id.btn_share);
         buttonCopy = view.getRootView().findViewById(R.id.btn_copy);
@@ -127,7 +129,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_shorten:
-                getShortUrl();
+                if (statsCheckBox.isChecked()) {
+                    getShortUrl(true);
+                } else {
+                    getShortUrl(false);
+                }
+
                 break;
 
             case R.id.btn_share:
@@ -156,12 +163,20 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void getShortUrl() {
+    private void getShortUrl(boolean statsEnabled) {
         if (longUrl == null) {
             longUrl = Objects.requireNonNull(mEditTextLongURL.getText()).toString();
         }
 
-        Call<ShortUrl> shortUrlCall = shortenApi.getShortURL("json", longUrl);
+        Call<ShortUrl> shortUrlCall;
+
+        if (statsEnabled) {
+            Toast.makeText(getContext(), "STATS ENABLED", Toast.LENGTH_SHORT).show();
+            shortUrlCall = shortenApi.getShortURLStats("json", longUrl, 1);
+        } else {
+            shortUrlCall = shortenApi.getShortURL("json", longUrl);
+        }
+
 
         shortUrlCall.enqueue(new Callback<ShortUrl>() {
             @Override
@@ -171,8 +186,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     if (response.body() != null) {
                         shortUrl = response.body().getShortenedURL();
 
-                        if(shortUrl != null) {
-                            ShortUrlProfile shortUrlProfile = new ShortUrlProfile(shortUrl, longUrl);
+                        if (shortUrl != null) {
+                            ShortUrlProfile shortUrlProfile = new ShortUrlProfile(shortUrl, longUrl, statsEnabled);
                             mEditTextShortURL.setText(shortUrlProfile.getShortUrl());
 
                             buttonShare.setEnabled(true);

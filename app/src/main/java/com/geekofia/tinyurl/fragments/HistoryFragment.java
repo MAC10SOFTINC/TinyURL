@@ -6,6 +6,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +26,7 @@ import com.geekofia.tinyurl.R;
 import com.geekofia.tinyurl.adapters.ShortUrlProfileAdapter;
 import com.geekofia.tinyurl.models.ShortUrlProfile;
 import com.geekofia.tinyurl.viewmodels.ShortUrlProfileViewModel;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
 public class HistoryFragment extends Fragment {
@@ -79,62 +81,64 @@ public class HistoryFragment extends Fragment {
         }).attachToRecyclerView(mRecyclerView);
 
 
-        shortUrlProfileAdapter.setOnProfileClickListener(new ShortUrlProfileAdapter.onProfileClickListener() {
+        shortUrlProfileAdapter.setOnProfileClickListener(profile -> {
+            final String shortURL = profile.getShortUrl();
+            final String longURL = profile.getLongUrl();
+            final boolean statsEnabled = profile.isStatsEnabled();
 
-            @Override
-            public void onProfileClick(ShortUrlProfile profile) {
-//                Toast.makeText(getContext(), "Profile is clicked", Toast.LENGTH_SHORT).show();
-                final String shortURL = profile.getShortUrl();
-                final String longURL = profile.getLongUrl();
+            LayoutInflater inflater = getLayoutInflater();
+            View view = inflater.inflate(R.layout.short_url_profile_click, null);
 
-                LayoutInflater inflater = getLayoutInflater();
-                View view = inflater.inflate(R.layout.short_url_profile_click, null);
+            // long url
+            TextInputEditText longUrl = view.findViewById(R.id.dialog_long_url);
+            longUrl.setText(profile.getLongUrl());
+            Button copyLong = view.findViewById(R.id.dialog_copy_long);
+            Button shareLong = view.findViewById(R.id.dialog_share_long);
 
-                // long url
-                TextInputEditText longUrl = view.findViewById(R.id.dialog_long_url);
-                longUrl.setText(profile.getLongUrl());
-                Button copyLong = view.findViewById(R.id.dialog_copy_long);
-                Button shareLong = view.findViewById(R.id.dialog_share_long);
+            copyLong.setOnClickListener(v -> clipURL(longURL));
+            shareLong.setOnClickListener(v -> {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, longURL);
+                sendIntent.setType("text/plain");
 
-                copyLong.setOnClickListener(v -> clipURL(longURL));
-                shareLong.setOnClickListener(v -> {
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, longURL);
-                    sendIntent.setType("text/plain");
+                Intent shareIntent = Intent.createChooser(sendIntent, "Share " + longURL + " with");
+                startActivity(shareIntent);
+            });
 
-                    Intent shareIntent = Intent.createChooser(sendIntent, "Share " + longURL + " with");
-                    startActivity(shareIntent);
+            // short url
+            TextInputEditText shortUrl = view.findViewById(R.id.dialog_short_url);
+            shortUrl.setText(profile.getShortUrl());
+            Button copyShort = view.findViewById(R.id.dialog_copy_short);
+            Button shareShort = view.findViewById(R.id.dialog_share_short);
+
+            copyShort.setOnClickListener(v -> clipURL(shortURL));
+            shareShort.setOnClickListener(v -> {
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, shortURL);
+                sendIntent.setType("text/plain");
+
+                Intent shareIntent = Intent.createChooser(sendIntent, "Share " + shortURL + " with");
+                startActivity(shareIntent);
+            });
+
+            // stats button
+            MaterialButton statsButton = view.findViewById(R.id.btn_stats);
+            if (statsEnabled) {
+                statsButton.setVisibility(View.VISIBLE);
+                statsButton.setOnClickListener(v -> {
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://is.gd/stats.php?url=" + shortURL.split("/")[3]));
+                    startActivity(browserIntent);
                 });
-
-                // short url
-                TextInputEditText shortUrl = view.findViewById(R.id.dialog_short_url);
-                shortUrl.setText(profile.getShortUrl());
-                Button copyShort = view.findViewById(R.id.dialog_copy_short);
-                Button shareShort = view.findViewById(R.id.dialog_share_short);
-
-                copyShort.setOnClickListener(v -> clipURL(shortURL));
-                shareShort.setOnClickListener(v -> {
-                    Intent sendIntent = new Intent();
-                    sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, shortURL);
-                    sendIntent.setType("text/plain");
-
-                    Intent shareIntent = Intent.createChooser(sendIntent, "Share " + shortURL + " with");
-                    startActivity(shareIntent);
-                });
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setView(view);
-//                builder.setTitle(String.valueOf(profile.getId()));
-//                builder.setIcon(R.drawable.ic_launcher_foreground);
-
-                builder.show();
+            } else {
+                statsButton.setVisibility(View.GONE);
             }
 
-//            @Override
-//            public void onButtonClick(ShortUrlProfile profile) {
-//                clipURL(profile.getShortUrl());
-//            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setView(view);
+
+            builder.show();
         });
     }
 
