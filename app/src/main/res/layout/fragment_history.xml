@@ -4,12 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_urls"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/short_url_profile" />
-
     <TextView
         android:padding="16dp"
         android:layout_centerHorizontal="true"
@@ -18,4 +12,11 @@
         android:layout_height="wrap_content"
         android:textSize="16sp"
         android:text="@string/hint_delete"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_urls"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/short_url_profile" />
+
 </RelativeLayout>

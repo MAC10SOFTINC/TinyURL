@@ -26,39 +26,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
-
         setContentView(R.layout.activity_main);
 
-        Intent receivedIntent = getIntent();
-        String receivedAction = receivedIntent.getAction();
-        String receivedType = receivedIntent.getType();
-
-        switch (receivedAction) {
-            //app has been launched from share list
-            case Intent.ACTION_SEND:
-                if (receivedType.startsWith("text/")) {
-                    String longUrl = receivedIntent.getStringExtra(Intent.EXTRA_TEXT);
-
-                    if (longUrl != null) {
-                        HomeFragment homeFragment = new HomeFragment();
-
-                        Bundle bundle = new Bundle();
-                        bundle.putString("LONG_URL", longUrl);
-                        homeFragment.setArguments(bundle);
-                        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment, HOME_FRAGMENT).commit();
-                    }
-                }
-                break;
-            //app has been launched directly, not from share list
-            case Intent.ACTION_MAIN:
-                HomeFragment homeFragment = new HomeFragment();
-                getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment, HOME_FRAGMENT).commit();
-                break;
-        }
+        HomeFragment homeFragment = new HomeFragment();
+        getSupportFragmentManager().popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, homeFragment, HOME_FRAGMENT).commit();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);

@@ -47,4 +47,6 @@
 
     <string name="str_stats">Enable statistics</string>
     <string name="str_btn_stats">statistics</string>
+
+    <string name="str_in_prog">Shortening ...</string>
 </resources>
