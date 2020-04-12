@@ -33,6 +33,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.geekofia.tinyurl.utils.Functions.clipURL;
+import static com.geekofia.tinyurl.utils.Functions.shareURL;
+
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private TextInputEditText mEditTextLongURL, mEditTextShortURL;
@@ -45,19 +48,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-//        Bundle bundle = this.getArguments();
-
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         initViews(view);
 
         Retrofit mRetrofit = initRetrofit();
         shortenApi = mRetrofit.create(ShortenApi.class);
-
-//        if (bundle != null) {
-//            longUrl = bundle.getString("LONG_URL");
-////            getShortUrl();
-//            mEditTextLongURL.setText(longUrl);
-//        }
 
         initViews(view);
 
@@ -95,6 +90,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                 if (s.toString().trim().length() == 0) {
                     buttonShorten.setEnabled(false);
+                    buttonShorten.setText(R.string.str_ready);
                 } else {
                     buttonShorten.setEnabled(true);
                 }
@@ -129,6 +125,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_shorten:
+                buttonShorten.setText(R.string.str_in_prog);
+                buttonShorten.setEnabled(false);
+
                 if (statsCheckBox.isChecked()) {
                     getShortUrl(true);
                 } else {
@@ -138,27 +137,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
 
             case R.id.btn_share:
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, shortUrl);
-                sendIntent.setType("text/plain");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
+                shareURL(shortUrl, getActivity());
                 break;
 
             case R.id.btn_copy:
-                // Gets a handle to the clipboard service.
-                ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-
-                // Creates a new text clip to put on the clipboard
-                ClipData clip = ClipData.newPlainText("Shortened URL", shortUrl);
-
-                // Set the clipboard's primary clip.
-                if (clipboard != null) {
-                    clipboard.setPrimaryClip(clip);
-                    Toast.makeText(getContext(), "Copied: " + shortUrl, Toast.LENGTH_SHORT).show();
-                }
+                clipURL(shortUrl, getActivity(), getContext());
                 break;
         }
     }
@@ -189,6 +172,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             ShortUrlProfile shortUrlProfile = new ShortUrlProfile(shortUrl, longUrl, statsEnabled);
                             mEditTextShortURL.setText(shortUrlProfile.getShortUrl());
 
+                            buttonShorten.setText(R.string.str_done);
                             buttonShare.setEnabled(true);
                             buttonCopy.setEnabled(true);
 

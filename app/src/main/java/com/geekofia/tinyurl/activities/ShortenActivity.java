@@ -29,6 +29,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static com.geekofia.tinyurl.utils.Functions.clipURL;
+import static com.geekofia.tinyurl.utils.Functions.shareURL;
+
 public class ShortenActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextInputEditText mEditTextLongURL;
@@ -77,6 +80,7 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
 
                 if (s.toString().trim().length() == 0) {
                     buttonShorten.setEnabled(false);
+                    buttonShorten.setText(R.string.str_done);
                 } else {
                     buttonShorten.setEnabled(true);
                 }
@@ -120,27 +124,11 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.btn_d_share:
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, shortUrl);
-                sendIntent.setType("text/plain");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                startActivity(shareIntent);
+                shareURL(shortUrl, this);
                 break;
 
             case R.id.btn_d_copy:
-                // Gets a handle to the clipboard service.
-                ClipboardManager clipboard = (ClipboardManager) this.getSystemService(Context.CLIPBOARD_SERVICE);
-
-                // Creates a new text clip to put on the clipboard
-                ClipData clip = ClipData.newPlainText("Shortened URL", shortUrl);
-
-                // Set the clipboard's primary clip.
-                if (clipboard != null) {
-                    clipboard.setPrimaryClip(clip);
-                    Toast.makeText(this, "Copied: " + shortUrl, Toast.LENGTH_SHORT).show();
-                }
+                clipURL(shortUrl, this, this);
                 break;
         }
     }

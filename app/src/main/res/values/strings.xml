@@ -49,4 +49,6 @@
     <string name="str_btn_stats">statistics</string>
 
     <string name="str_in_prog">Shortening ...</string>
+    <string name="str_ready">Shorten</string>
+    <string name="str_done">Done</string>
 </resources>

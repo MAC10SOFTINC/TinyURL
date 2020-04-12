@@ -29,6 +29,9 @@ import com.geekofia.tinyurl.viewmodels.ShortUrlProfileViewModel;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 
+import static com.geekofia.tinyurl.utils.Functions.clipURL;
+import static com.geekofia.tinyurl.utils.Functions.shareURL;
+
 public class HistoryFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
@@ -95,15 +98,9 @@ public class HistoryFragment extends Fragment {
             Button copyLong = view.findViewById(R.id.dialog_copy_long);
             Button shareLong = view.findViewById(R.id.dialog_share_long);
 
-            copyLong.setOnClickListener(v -> clipURL(longURL));
+            copyLong.setOnClickListener(v -> clipURL(longURL, getActivity(), getContext()));
             shareLong.setOnClickListener(v -> {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, longURL);
-                sendIntent.setType("text/plain");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, "Share " + longURL + " with");
-                startActivity(shareIntent);
+                shareURL(longURL, getActivity());
             });
 
             // short url
@@ -112,15 +109,9 @@ public class HistoryFragment extends Fragment {
             Button copyShort = view.findViewById(R.id.dialog_copy_short);
             Button shareShort = view.findViewById(R.id.dialog_share_short);
 
-            copyShort.setOnClickListener(v -> clipURL(shortURL));
+            copyShort.setOnClickListener(v -> clipURL(shortURL, getActivity(), getContext()));
             shareShort.setOnClickListener(v -> {
-                Intent sendIntent = new Intent();
-                sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, shortURL);
-                sendIntent.setType("text/plain");
-
-                Intent shareIntent = Intent.createChooser(sendIntent, "Share " + shortURL + " with");
-                startActivity(shareIntent);
+                shareURL(shortURL, getActivity());
             });
 
             // stats button
@@ -140,19 +131,5 @@ public class HistoryFragment extends Fragment {
 
             builder.show();
         });
-    }
-
-    private void clipURL(String shortUrl) {
-        // Gets a handle to the clipboard service.
-        ClipboardManager clipboard = (ClipboardManager) getActivity().getSystemService(Context.CLIPBOARD_SERVICE);
-
-        // Creates a new text clip to put on the clipboard
-        ClipData clip = ClipData.newPlainText("Shortened URL", shortUrl);
-
-        // Set the clipboard's primary clip.
-        if (clipboard != null) {
-            clipboard.setPrimaryClip(clip);
-            Toast.makeText(getContext(), "Copied: " + shortUrl, Toast.LENGTH_SHORT).show();
-        }
     }
 }
