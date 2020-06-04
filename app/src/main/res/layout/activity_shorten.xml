@@ -53,7 +53,7 @@
         android:paddingBottom="8dp"
         android:text="@string/str_share"
         android:visibility="gone"
-        app:icon="@drawable/ic_shorten" />
+        app:icon="@drawable/ic_share" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_d_copy"
@@ -67,6 +67,6 @@
         android:paddingBottom="8dp"
         android:text="@string/str_copy"
         android:visibility="gone"
-        app:icon="@drawable/ic_shorten" />
+        app:icon="@drawable/ic_copy" />
 
 </RelativeLayout>
