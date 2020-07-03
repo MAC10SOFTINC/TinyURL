@@ -119,7 +119,7 @@ public class HistoryFragment extends Fragment {
             if (statsEnabled) {
                 statsButton.setVisibility(View.VISIBLE);
                 statsButton.setOnClickListener(v -> {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://is.gd/stats.php?url=" + shortURL.split("/")[3]));
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + shortURL.split("/")[2] + "/stats.php?url=" + shortURL.split("/")[3]));
                     startActivity(browserIntent);
                 });
             } else {
