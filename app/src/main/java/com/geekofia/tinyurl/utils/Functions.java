@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class Functions {
     public static void clipURL(String url, Activity activity, Context context) {
         // Gets a handle to the clipboard service.
@@ -30,5 +33,19 @@ public class Functions {
 
         Intent shareIntent = Intent.createChooser(sendIntent, "Share " + url + " with");
         activity.startActivity(shareIntent);
+    }
+
+    public static Retrofit initRetrofitIsGd() {
+        return new Retrofit.Builder()
+                .baseUrl("https://is.gd/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+    }
+
+    public static Retrofit initRetrofitVGd() {
+        return new Retrofit.Builder()
+                .baseUrl("https://v.gd/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
     }
 }

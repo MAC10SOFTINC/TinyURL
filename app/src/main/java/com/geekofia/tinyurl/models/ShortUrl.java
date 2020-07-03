@@ -2,21 +2,18 @@ package com.geekofia.tinyurl.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class ShortUrl {
+public class ShortUrl extends ErrorResponse {
 
     @SerializedName("shorturl")
     private String url;
 
-    public ShortUrl(String shortenedURL) {
+    public ShortUrl(int errorCode, String errorMessage,  String shortenedURL) {
+        super(errorCode, errorMessage);
         this.url = shortenedURL;
     }
 
     public String getShortenedURL() {
         return url;
-    }
-
-    public void setShortenedURL(String shortenedURL) {
-        this.url = shortenedURL;
     }
 
     @Override

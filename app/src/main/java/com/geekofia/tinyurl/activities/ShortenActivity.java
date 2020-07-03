@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import com.geekofia.tinyurl.R;
@@ -30,16 +32,19 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.geekofia.tinyurl.utils.Functions.clipURL;
+import static com.geekofia.tinyurl.utils.Functions.initRetrofitIsGd;
+import static com.geekofia.tinyurl.utils.Functions.initRetrofitVGd;
 import static com.geekofia.tinyurl.utils.Functions.shareURL;
 
 public class ShortenActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private TextInputEditText mEditTextLongURL;
+    private TextInputEditText mEditTextLongURL, mEditTextCustomURL;
     private MaterialButton buttonShorten, buttonShare, buttonCopy;
-    private ShortenApi shortenApi;
+    private ShortenApi shortenApiIsGd, shortenApiVGd;
     private String longUrl, shortUrl;
     private ShortUrlProfileRepo profileRepository;
     private MaterialCheckBox statsCheckBox;
+    private AutoCompleteTextView mAutoCompleteDomain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,8 +61,10 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
 
             if (longUrl != null) {
                 mEditTextLongURL.setText(longUrl);
-                Retrofit mRetrofit = initRetrofit();
-                shortenApi = mRetrofit.create(ShortenApi.class);
+                Retrofit mRetrofitIsGd = initRetrofitIsGd();
+                Retrofit mRetrofitVGd = initRetrofitVGd();
+                shortenApiIsGd = mRetrofitIsGd.create(ShortenApi.class);
+                shortenApiVGd = mRetrofitVGd.create(ShortenApi.class);
             }
         }
 
@@ -66,6 +73,8 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initViews() {
         mEditTextLongURL = findViewById(R.id.input_url);
+        mAutoCompleteDomain = findViewById(R.id.custom_domain);
+        mEditTextCustomURL = findViewById(R.id.custom_url);
 
         mEditTextLongURL.addTextChangedListener(new TextWatcher() {
             @Override
@@ -98,6 +107,46 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
+        // domain selection
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.domains, android.R.layout.simple_spinner_dropdown_item);
+        mAutoCompleteDomain.setAdapter(adapter);
+
+        mAutoCompleteDomain.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                buttonShorten.setEnabled(true);
+                buttonShorten.setText(R.string.str_ready);
+            }
+        });
+
+        mEditTextCustomURL.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                buttonShorten.setEnabled(true);
+                buttonShorten.setText(R.string.str_ready);
+            }
+        });
+
         statsCheckBox = findViewById(R.id.check_d_stats);
         buttonShorten = findViewById(R.id.btn_d_shorten);
         buttonShare = findViewById(R.id.btn_d_share);
@@ -115,10 +164,37 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
                 buttonShorten.setText(R.string.str_in_prog);
                 buttonShorten.setEnabled(false);
 
-                if (statsCheckBox.isChecked()) {
-                    getShortUrl(true);
+                String domain = mAutoCompleteDomain.getText().toString();
+                String customURL = mEditTextCustomURL.getText().toString();
+
+                if (domain.equals("is.gd")) {
+                    if (statsCheckBox.isChecked()) {
+                        if (customURL.isEmpty()) {
+                            getShortUrl(shortenApiIsGd, true, null);
+                        } else {
+                            getShortUrl(shortenApiIsGd, true, customURL);
+                        }
+                    } else {
+                        if (customURL.isEmpty()) {
+                            getShortUrl(shortenApiIsGd, false, null);
+                        } else {
+                            getShortUrl(shortenApiIsGd, false, customURL);
+                        }
+                    }
                 } else {
-                    getShortUrl(false);
+                    if (statsCheckBox.isChecked()) {
+                        if (customURL.isEmpty()) {
+                            getShortUrl(shortenApiVGd, true, null);
+                        } else {
+                            getShortUrl(shortenApiVGd, true, customURL);
+                        }
+                    } else {
+                        if (customURL.isEmpty()) {
+                            getShortUrl(shortenApiVGd, false, null);
+                        } else {
+                            getShortUrl(shortenApiVGd, false, customURL);
+                        }
+                    }
                 }
 
                 break;
@@ -140,7 +216,7 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
                 .build();
     }
 
-    private void getShortUrl(boolean statsEnabled) {
+    private void getShortUrl(ShortenApi shortenApi, boolean statsEnabled, String customURL) {
         if (longUrl == null) {
             longUrl = Objects.requireNonNull(mEditTextLongURL.getText()).toString();
         }
@@ -148,9 +224,17 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
         Call<ShortUrl> shortUrlCall;
 
         if (statsEnabled) {
-            shortUrlCall = shortenApi.getShortURLStats("json", longUrl, 1);
+            if (customURL != null) {
+                shortUrlCall = shortenApi.getShortURLCustomStats("json", longUrl, customURL, 1);
+            } else {
+                shortUrlCall = shortenApi.getShortURLStats("json", longUrl, 1);
+            }
         } else {
-            shortUrlCall = shortenApi.getShortURL("json", longUrl);
+            if (customURL != null) {
+                shortUrlCall = shortenApi.getShortURLCustom("json", longUrl, customURL);
+            } else {
+                shortUrlCall = shortenApi.getShortURL("json", longUrl);
+            }
         }
 
 
@@ -158,7 +242,6 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
             @Override
             public void onResponse(Call<ShortUrl> call, Response<ShortUrl> response) {
                 if (response.isSuccessful()) {
-//                    Log.d("SHORT_RESPONSE", response.body().toString());
                     if (response.body() != null) {
                         shortUrl = response.body().getShortenedURL();
 
@@ -175,7 +258,8 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
 
                             profileRepository.insert(shortUrlProfile);
                         } else {
-                            Toast.makeText(getBaseContext(), "Can't short this URL ;(", Toast.LENGTH_SHORT).show();
+                            buttonShorten.setText(R.string.str_ready);
+                            Toast.makeText(getBaseContext(), response.body().getErrorMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 } else {

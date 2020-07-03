@@ -2,10 +2,13 @@
     <string name="app_name">TinyURL</string>
 
     <string name="helper_long_url">Long URL</string>
+    <string name="helper_custom_url">Custom short URLs can only contain alphanumeric characters [A-Z, a-z, 0-9] and underscores [_]</string>
     <string name="helper_short_url">Short URL</string>
 
     <string name="hint_long_url">Enter long URL here</string>
+    <string name="hint_custom_url">Enter desired custom URL here</string>
     <string name="hint_short_url">Shortened URL will be here</string>
+    <string name="hint_domain_dropdown">Domain</string>
 
     <string name="str_developer">Developed with ❤ by chankruze</string>
 
@@ -51,4 +54,10 @@
     <string name="str_in_prog">Shortening ...</string>
     <string name="str_ready">Shorten</string>
     <string name="str_done">Done</string>
+    <string name="str_def_domain">is.gd</string>
+
+    <string-array name="domains">
+        <item>is.gd</item>
+        <item>v.gd</item>
+    </string-array>
 </resources>

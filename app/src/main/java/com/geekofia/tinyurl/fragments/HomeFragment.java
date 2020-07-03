@@ -1,15 +1,14 @@
 package com.geekofia.tinyurl.fragments;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,19 +30,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.geekofia.tinyurl.utils.Functions.clipURL;
+import static com.geekofia.tinyurl.utils.Functions.initRetrofitIsGd;
+import static com.geekofia.tinyurl.utils.Functions.initRetrofitVGd;
 import static com.geekofia.tinyurl.utils.Functions.shareURL;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
-    private TextInputEditText mEditTextLongURL, mEditTextShortURL;
+    private TextInputEditText mEditTextLongURL, mEditTextShortURL, mEditTextCustomURL;
     private MaterialButton buttonShorten, buttonShare, buttonCopy;
-    private ShortenApi shortenApi;
+    private ShortenApi shortenApiIsGd, shortenApiVGd;
     private String longUrl, shortUrl;
     private ShortUrlProfileRepo profileRepository;
     private MaterialCheckBox statsCheckBox;
+    private AutoCompleteTextView mAutoCompleteDomain;
 
     @Nullable
     @Override
@@ -51,11 +52,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         initViews(view);
 
-        Retrofit mRetrofit = initRetrofit();
-        shortenApi = mRetrofit.create(ShortenApi.class);
-
-        initViews(view);
-
+        Retrofit mRetrofitIsGd = initRetrofitIsGd();
+        Retrofit mRetrofitVGd = initRetrofitVGd();
+        shortenApiIsGd = mRetrofitIsGd.create(ShortenApi.class);
+        shortenApiVGd = mRetrofitVGd.create(ShortenApi.class);
         return view;
     }
 
@@ -65,16 +65,15 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         profileRepository = new ShortUrlProfileRepo(getActivity().getApplication());
     }
 
-    private Retrofit initRetrofit() {
-        return new Retrofit.Builder()
-                .baseUrl("https://is.gd/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }
-
     private void initViews(View view) {
         mEditTextLongURL = view.getRootView().findViewById(R.id.edit_text_long_url);
         mEditTextShortURL = view.getRootView().findViewById(R.id.edit_text_short_url);
+        mAutoCompleteDomain = view.getRootView().findViewById(R.id.dropdown_custom_domain);
+        mEditTextCustomURL = view.getRootView().findViewById(R.id.edit_text_custom_url);
+        statsCheckBox = view.getRootView().findViewById(R.id.check_stats);
+        buttonShorten = view.getRootView().findViewById(R.id.btn_shorten);
+        buttonShare = view.getRootView().findViewById(R.id.btn_share);
+        buttonCopy = view.getRootView().findViewById(R.id.btn_copy);
 
         mEditTextLongURL.addTextChangedListener(new TextWatcher() {
             @Override
@@ -96,7 +95,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
 
                 String url = s.toString().trim();
-                if (url.startsWith("is.gd") || url.contains("https://is.gd") || url.contains("https://is.gd/")) {
+                if (url.startsWith("is.gd") || url.contains("https://is.gd") || url.contains("https://is.gd/") ||
+                        url.startsWith("v.gd") || url.contains("https://v.gd") || url.contains("https://v.gd/")) {
                     buttonShorten.setEnabled(false);
                     buttonShare.setEnabled(false);
                     buttonCopy.setEnabled(false);
@@ -111,10 +111,47 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        statsCheckBox = view.getRootView().findViewById(R.id.check_stats);
-        buttonShorten = view.getRootView().findViewById(R.id.btn_shorten);
-        buttonShare = view.getRootView().findViewById(R.id.btn_share);
-        buttonCopy = view.getRootView().findViewById(R.id.btn_copy);
+        // domain selection
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireContext(), R.array.domains, android.R.layout.simple_spinner_dropdown_item);
+        mAutoCompleteDomain.setAdapter(adapter);
+
+        mAutoCompleteDomain.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                buttonShorten.setEnabled(true);
+                buttonShorten.setText(R.string.str_ready);
+                mEditTextShortURL.setText("");
+            }
+        });
+
+        mEditTextCustomURL.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                buttonShorten.setEnabled(true);
+                buttonShorten.setText(R.string.str_ready);
+                mEditTextShortURL.setText("");
+            }
+        });
 
         buttonShorten.setOnClickListener(this);
         buttonShare.setOnClickListener(this);
@@ -128,12 +165,38 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 buttonShorten.setText(R.string.str_in_prog);
                 buttonShorten.setEnabled(false);
 
-                if (statsCheckBox.isChecked()) {
-                    getShortUrl(true);
-                } else {
-                    getShortUrl(false);
-                }
+                String domain = mAutoCompleteDomain.getText().toString();
+                String customURL = mEditTextCustomURL.getText().toString();
 
+                if (domain.equals("is.gd")) {
+                    if (statsCheckBox.isChecked()) {
+                        if (customURL.isEmpty()) {
+                            getShortUrl(shortenApiIsGd, true, null);
+                        } else {
+                            getShortUrl(shortenApiIsGd, true, customURL);
+                        }
+                    } else {
+                        if (customURL.isEmpty()) {
+                            getShortUrl(shortenApiIsGd, false, null);
+                        } else {
+                            getShortUrl(shortenApiIsGd, false, customURL);
+                        }
+                    }
+                } else {
+                    if (statsCheckBox.isChecked()) {
+                        if (customURL.isEmpty()) {
+                            getShortUrl(shortenApiVGd, true, null);
+                        } else {
+                            getShortUrl(shortenApiVGd, true, customURL);
+                        }
+                    } else {
+                        if (customURL.isEmpty()) {
+                            getShortUrl(shortenApiVGd, false, null);
+                        } else {
+                            getShortUrl(shortenApiVGd, false, customURL);
+                        }
+                    }
+                }
                 break;
 
             case R.id.btn_share:
@@ -146,7 +209,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void getShortUrl(boolean statsEnabled) {
+    private void getShortUrl(ShortenApi shortenApi, boolean statsEnabled, String customURL) {
         if (longUrl == null) {
             longUrl = Objects.requireNonNull(mEditTextLongURL.getText()).toString();
         }
@@ -154,17 +217,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         Call<ShortUrl> shortUrlCall;
 
         if (statsEnabled) {
-            shortUrlCall = shortenApi.getShortURLStats("json", longUrl, 1);
+            if (customURL != null) {
+                shortUrlCall = shortenApi.getShortURLCustomStats("json", longUrl, customURL, 1);
+            } else {
+                shortUrlCall = shortenApi.getShortURLStats("json", longUrl, 1);
+            }
         } else {
-            shortUrlCall = shortenApi.getShortURL("json", longUrl);
+            if (customURL != null) {
+                shortUrlCall = shortenApi.getShortURLCustom("json", longUrl, customURL);
+            } else {
+                shortUrlCall = shortenApi.getShortURL("json", longUrl);
+            }
         }
-
 
         shortUrlCall.enqueue(new Callback<ShortUrl>() {
             @Override
             public void onResponse(Call<ShortUrl> call, Response<ShortUrl> response) {
                 if (response.isSuccessful()) {
-//                    Log.d("SHORT_RESPONSE", response.body().toString());
                     if (response.body() != null) {
                         shortUrl = response.body().getShortenedURL();
 
@@ -178,7 +247,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                             profileRepository.insert(shortUrlProfile);
                         } else {
-                            Toast.makeText(getContext(), "Can't short this URL ;(", Toast.LENGTH_SHORT).show();
+                            buttonShorten.setText(R.string.str_ready);
+                            mEditTextShortURL.setText("");
+                            Toast.makeText(getContext(), response.body().getErrorMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
                 } else {
