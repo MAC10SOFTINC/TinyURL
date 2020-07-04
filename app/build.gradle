@@ -7,8 +7,8 @@ android {
         applicationId "com.geekofia.tinyurl"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 28
-        versionName "6.0.1"
+        versionCode 29
+        versionName "6.0.2"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
