@@ -128,7 +128,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                buttonShorten.setEnabled(true);
+                if (!mEditTextLongURL.getText().toString().isEmpty()) {
+                    buttonShorten.setEnabled(true);
+                }
                 buttonShorten.setText(R.string.str_ready);
                 mEditTextShortURL.setText("");
             }
@@ -147,7 +149,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                buttonShorten.setEnabled(true);
+                if (!mEditTextLongURL.getText().toString().isEmpty()) {
+                    buttonShorten.setEnabled(true);
+                }
                 buttonShorten.setText(R.string.str_ready);
                 mEditTextShortURL.setText("");
             }
