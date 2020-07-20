@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -35,17 +36,19 @@ public class Functions {
         activity.startActivity(shareIntent);
     }
 
-    public static Retrofit initRetrofitIsGd() {
+    public static Retrofit initRetrofitIsGd(GsonConverterFactory gsonFactory, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl("https://is.gd/")
-                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .addConverterFactory(gsonFactory)
                 .build();
     }
 
-    public static Retrofit initRetrofitVGd() {
+    public static Retrofit initRetrofitVGd(GsonConverterFactory gsonFactory, OkHttpClient okHttpClient) {
         return new Retrofit.Builder()
                 .baseUrl("https://v.gd/")
-                .addConverterFactory(GsonConverterFactory.create())
+                .client(okHttpClient)
+                .addConverterFactory(gsonFactory)
                 .build();
     }
 }

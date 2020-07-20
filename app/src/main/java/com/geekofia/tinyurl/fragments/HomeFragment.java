@@ -26,10 +26,12 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 import static com.geekofia.tinyurl.utils.Functions.clipURL;
 import static com.geekofia.tinyurl.utils.Functions.initRetrofitIsGd;
@@ -45,6 +47,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     private ShortUrlProfileRepo profileRepository;
     private MaterialCheckBox statsCheckBox;
     private AutoCompleteTextView mAutoCompleteDomain;
+    private GsonConverterFactory gsonFactory = GsonConverterFactory.create();
+    private OkHttpClient okHttpClient = new OkHttpClient();
 
     @Nullable
     @Override
@@ -52,8 +56,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         initViews(view);
 
-        Retrofit mRetrofitIsGd = initRetrofitIsGd();
-        Retrofit mRetrofitVGd = initRetrofitVGd();
+        Retrofit mRetrofitIsGd = initRetrofitIsGd(gsonFactory, okHttpClient);
+        Retrofit mRetrofitVGd = initRetrofitVGd(gsonFactory, okHttpClient);
         shortenApiIsGd = mRetrofitIsGd.create(ShortenApi.class);
         shortenApiVGd = mRetrofitVGd.create(ShortenApi.class);
         return view;
@@ -169,6 +173,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 buttonShorten.setText(R.string.str_in_prog);
                 buttonShorten.setEnabled(false);
 
+                this.longUrl = mEditTextLongURL.getText().toString();
                 String domain = mAutoCompleteDomain.getText().toString();
                 String customURL = mEditTextCustomURL.getText().toString();
 
@@ -214,23 +219,23 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     }
 
     private void getShortUrl(ShortenApi shortenApi, boolean statsEnabled, String customURL) {
-        if (longUrl == null) {
-            longUrl = Objects.requireNonNull(mEditTextLongURL.getText()).toString();
+        if (this.longUrl == null) {
+            this.longUrl = Objects.requireNonNull(mEditTextLongURL.getText()).toString();
         }
 
         Call<ShortUrl> shortUrlCall;
 
         if (statsEnabled) {
             if (customURL != null) {
-                shortUrlCall = shortenApi.getShortURLCustomStats("json", longUrl, customURL, 1);
+                shortUrlCall = shortenApi.getShortURLCustomStats("json", this.longUrl, customURL, 1);
             } else {
-                shortUrlCall = shortenApi.getShortURLStats("json", longUrl, 1);
+                shortUrlCall = shortenApi.getShortURLStats("json", this.longUrl, 1);
             }
         } else {
             if (customURL != null) {
-                shortUrlCall = shortenApi.getShortURLCustom("json", longUrl, customURL);
+                shortUrlCall = shortenApi.getShortURLCustom("json", this.longUrl, customURL);
             } else {
-                shortUrlCall = shortenApi.getShortURL("json", longUrl);
+                shortUrlCall = shortenApi.getShortURL("json", this.longUrl);
             }
         }
 

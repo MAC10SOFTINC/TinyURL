@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
 
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,6 +46,8 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
     private ShortUrlProfileRepo profileRepository;
     private MaterialCheckBox statsCheckBox;
     private AutoCompleteTextView mAutoCompleteDomain;
+    private GsonConverterFactory gsonFactory = GsonConverterFactory.create();
+    private OkHttpClient okHttpClient = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +64,8 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
 
             if (longUrl != null) {
                 mEditTextLongURL.setText(longUrl);
-                Retrofit mRetrofitIsGd = initRetrofitIsGd();
-                Retrofit mRetrofitVGd = initRetrofitVGd();
+                Retrofit mRetrofitIsGd = initRetrofitIsGd(gsonFactory, okHttpClient);
+                Retrofit mRetrofitVGd = initRetrofitVGd(gsonFactory, okHttpClient);
                 shortenApiIsGd = mRetrofitIsGd.create(ShortenApi.class);
                 shortenApiVGd = mRetrofitVGd.create(ShortenApi.class);
             }
