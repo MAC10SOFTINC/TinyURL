@@ -55,6 +55,7 @@
     <string name="str_ready">Shorten</string>
     <string name="str_done">Done</string>
     <string name="str_def_domain">is.gd</string>
+    <string name="txt_dark_theme">Dark Theme</string>
 
     <string-array name="domains">
         <item>is.gd</item>

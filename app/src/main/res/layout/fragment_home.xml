@@ -89,7 +89,6 @@
                 android:id="@+id/check_stats"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rl_domain_setting"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:text="@string/str_stats" />
@@ -98,7 +97,6 @@
                 android:id="@+id/btn_shorten"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rl_domain_setting"
                 android:layout_alignParentEnd="true"
                 android:enabled="false"
                 android:paddingTop="8dp"
