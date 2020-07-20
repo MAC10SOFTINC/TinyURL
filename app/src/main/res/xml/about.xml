@@ -10,6 +10,12 @@
         android:summary="@string/versionCode"
         android:title="Version Code" />
 
+    <SwitchPreference
+        android:key="dark_theme"
+        android:title="Dark Theme"
+        android:defaultValue="false"
+        android:summary="Restart the app to apply changes"/>
+
     <PreferenceCategory
         android:key="developer_category"
         android:title="@string/developers_title">

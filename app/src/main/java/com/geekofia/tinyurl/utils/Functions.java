@@ -7,6 +7,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatDelegate;
+
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -50,5 +52,13 @@ public class Functions {
                 .client(okHttpClient)
                 .addConverterFactory(gsonFactory)
                 .build();
+    }
+
+    public static void updateTheme(boolean isDarkEnabled) {
+        if (isDarkEnabled) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
     }
 }
