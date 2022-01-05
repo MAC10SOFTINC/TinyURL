@@ -17,29 +17,29 @@
             android:id="@+id/input_url"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:editable="false"
             android:focusable="false" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <!-- Input Custom URL -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layout_domain_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginBottom="16dp"
+        android:orientation="vertical"
         android:layout_below="@id/layout_text_input">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/dropdown_domain"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
             app:helperText="@string/hint_domain_dropdown">
 
             <AutoCompleteTextView
                 android:id="@+id/custom_domain"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:editable="false"
                 android:text="@string/str_def_domain"
@@ -55,7 +55,7 @@
             android:hint="@string/hint_custom_url"
             app:endIconMode="clear_text"
             app:helperText="@string/helper_custom_url"
-            android:layout_marginStart="4sp"
+            android:layout_marginTop="8dp"
             app:helperTextEnabled="true"
             app:counterEnabled="true"
             app:counterMaxLength="30"
@@ -70,7 +70,7 @@
                 android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
                 android:maxLength="30"/>
         </com.google.android.material.textfield.TextInputLayout>
-    </RelativeLayout>
+    </LinearLayout>
 
 
     <com.google.android.material.checkbox.MaterialCheckBox

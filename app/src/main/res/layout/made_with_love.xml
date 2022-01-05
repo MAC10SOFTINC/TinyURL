@@ -3,5 +3,5 @@
     android:layout_height="wrap_content"
     android:layout_alignParentBottom="true"
     android:layout_centerHorizontal="true"
-    android:text="@string/str_developer"
+    android:text="@string/str_owner"
     android:textColor="@color/colorTextPrimary" />

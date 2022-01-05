@@ -1,8 +1,8 @@
 <resources>
-    <string name="app_name">TinyURL</string>
+    <string name="app_name">Mac10Shorturl</string>
 
     <string name="helper_long_url">Long URL</string>
-    <string name="helper_custom_url">Custom short URLs can only contain alphanumeric characters [A-Z, a-z, 0-9] and underscores [_]</string>
+    <string name="helper_custom_url">Can only contain alphanumeric characters [A-Z, a-z, 0-9] and underscores [_]</string>
     <string name="helper_short_url">Short URL</string>
 
     <string name="hint_long_url">Enter long URL here</string>
@@ -10,41 +10,46 @@
     <string name="hint_short_url">Shortened URL will be here</string>
     <string name="hint_domain_dropdown">Domain</string>
 
-    <string name="str_developer">Developed with ❤ by chankruze</string>
+    <string name="str_owner">Owned by Mac10Soft Inc.</string>
 
     <!-- About -->
     <string name="version_title">App</string>
 
-    <string name="developers_title">Developers</string>
-    <string name="developers_chankruze" translatable="false">• Founder \n• Core Developer \n• UI/UX Designer</string>
+    <string name="owner_title">New Owner</string>
+    <string name="owner_name">McCal M. Roberts (CEO)</string>
+    <string name="owner_summary" translatable="false">Mac10Soft Inc.\nTel: 441-339-4011\nE-Mail: name_mac@hotmail.com\n#10 Bridgeview Lane, Somerset, Bermuda</string>
 
     <string name="about_title">About</string>
     <string name="links_title">Links</string>
 
     <string name="announcements_title">Announcements</string>
     <string name="announcements_summary">Official announcements channel</string>
+    <string name="announcements_channel">https://t.me/geekofiachannel</string>
 
     <string name="telegram_title">Telegram</string>
     <string name="telegram_summary">Official telegram group for support</string>
+    <string name="telegram_group">https://t.me/geekofia</string>
 
     <string name="discord_title">Discord</string>
     <string name="discord_summary">Official discord server for support</string>
-
-    <string name="donate">Donate</string>
-    <string name="donate_summary">Show your support to chankruze \nUPI Address: chankruze@oksbi</string>
+    <string name="discord_invite">https://discord.gg/uNKRMua</string>
 
     <string name="website_title">Website</string>
     <string name="website_title_summary">Visit my website for more</string>
+    <string name="website_url">https://bdafilm.com/</string>
 
     <string name="rate_title">Feedback</string>
     <string name="rate_summary">Write your review on playstore</string>
+    <string name="store_url">https://play.google.com/store/apps/details?id=com.geekofia.tinyurl</string>
 
     <string name="explore_title">Explore</string>
     <string name="explore_summary">Try my other apps</string>
+    <string name="explore_url">https://play.google.com/store/apps/developer?id=chankruze</string>
 
     <string name="str_share">share</string>
     <string name="str_copy">copy</string>
     <string name="str_shorten">shorten</string>
+    <string name="str_save_qr">save QR</string>
 
     <string name="hint_delete">swipe any card LEFT (←) to delete it from history</string>
 

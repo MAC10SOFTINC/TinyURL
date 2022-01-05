@@ -116,6 +116,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:layout_below="@id/btn_stats"
-        android:text="@string/str_developer"/>
+        android:text="@string/str_owner"/>
 
 </RelativeLayout>

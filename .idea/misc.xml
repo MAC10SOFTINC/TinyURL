@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/drawable/ic_baseline_qr_code_24.xml" value="0.29444444444444445" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/drawable/ic_qr.xml" value="0.29444444444444445" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/drawable/ic_save.xml" value="0.29444444444444445" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/drawable/ic_share.xml" value="0.29444444444444445" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/layout/activity_main.xml" value="0.259375" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/layout/activity_shorten.xml" value="0.4" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/layout/fragment_history.xml" value="0.29010416666666666" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/layout/fragment_home.xml" value="0.259375" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/layout/fragment_success.xml" value="0.29010416666666666" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/layout/made_with_love.xml" value="0.259375" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/layout/short_url_profile_click.xml" value="0.29010416666666666" />
+        <entry key="..\:/Users/chankruze/StudioProjects/TinyURL/app/src/main/res/xml/about.xml" value="0.264" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

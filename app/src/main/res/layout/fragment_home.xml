@@ -28,24 +28,25 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <!-- Input Custom URL -->
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/rl_domain_setting"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/ti_long_url"
+            android:orientation="vertical"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp">
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/ti_dropdown_domain"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:helperText="@string/hint_domain_dropdown">
 
                 <AutoCompleteTextView
                     android:id="@+id/dropdown_custom_domain"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:editable="false"
                     android:focusable="false"
@@ -59,6 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4sp"
+                android:layout_marginTop="16dp"
                 android:layout_toEndOf="@id/ti_dropdown_domain"
                 android:hint="@string/hint_custom_url"
                 app:counterEnabled="true"
@@ -76,7 +78,7 @@
                     android:maxLength="30"
                     android:maxLines="3" />
             </com.google.android.material.textfield.TextInputLayout>
-        </RelativeLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/rl_shorten_setting"
@@ -107,62 +109,62 @@
         </RelativeLayout>
 
         <!-- Shortened URL -->
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/ti_short_url"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/rl_shorten_setting"
-            android:layout_marginTop="16dp"
-            android:hint="@string/hint_short_url"
-            app:endIconMode="none"
-            app:helperText="@string/helper_short_url"
-            app:helperTextEnabled="true"
-            app:hintEnabled="true">
+<!--        <com.google.android.material.textfield.TextInputLayout-->
+<!--            android:id="@+id/ti_short_url"-->
+<!--            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/rl_shorten_setting"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:hint="@string/hint_short_url"-->
+<!--            app:endIconMode="none"-->
+<!--            app:helperText="@string/helper_short_url"-->
+<!--            app:helperTextEnabled="true"-->
+<!--            app:hintEnabled="true">-->
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edit_text_short_url"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:editable="false"
-                android:focusable="false" />
-        </com.google.android.material.textfield.TextInputLayout>
+<!--            <com.google.android.material.textfield.TextInputEditText-->
+<!--                android:id="@+id/edit_text_short_url"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:editable="false"-->
+<!--                android:focusable="false" />-->
+<!--        </com.google.android.material.textfield.TextInputLayout>-->
 
-        <RelativeLayout
-            android:id="@+id/rl_share_setting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/ti_short_url"
-            android:layout_alignParentEnd="true">
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/rl_share_setting"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_below="@id/ti_short_url"-->
+<!--            android:layout_alignParentEnd="true">-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_share"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/str_share"
-                app:icon="@drawable/ic_share" />
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/btn_share"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:enabled="false"-->
+<!--                android:paddingTop="8dp"-->
+<!--                android:paddingBottom="8dp"-->
+<!--                android:text="@string/str_share"-->
+<!--                app:icon="@drawable/ic_share" />-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_copy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_toEndOf="@id/btn_share"
-                android:enabled="false"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:text="@string/str_copy"
-                app:icon="@drawable/ic_copy" />
-        </RelativeLayout>
+<!--            <com.google.android.material.button.MaterialButton-->
+<!--                android:id="@+id/btn_copy"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_toEndOf="@id/btn_share"-->
+<!--                android:enabled="false"-->
+<!--                android:paddingTop="8dp"-->
+<!--                android:paddingBottom="8dp"-->
+<!--                android:text="@string/str_copy"-->
+<!--                app:icon="@drawable/ic_copy" />-->
+<!--        </RelativeLayout>-->
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
-            android:layout_below="@id/rl_share_setting">
+            android:layout_below="@id/rl_shorten_setting">
 
             <include layout="@layout/made_with_love"></include>
         </RelativeLayout>
