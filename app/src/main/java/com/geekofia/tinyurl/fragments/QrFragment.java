@@ -71,9 +71,5 @@ public class QrFragment extends Fragment implements View.OnClickListener {
         if (view.getId() == R.id.btn_share) {
             shareURL(shortUrl, requireActivity());
         }
-
-        if (view.getId() == R.id.btn_copy) {
-            clipURL(shortUrl, requireActivity(), getContext());
-        }
     }
 }

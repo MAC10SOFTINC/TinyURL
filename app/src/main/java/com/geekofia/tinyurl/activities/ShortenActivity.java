@@ -2,9 +2,6 @@ package com.geekofia.tinyurl.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -164,7 +161,7 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_d_shorten:
-                buttonShorten.setText(R.string.str_in_prog);
+                buttonShorten.setText(R.string.str_in_progress);
                 buttonShorten.setEnabled(false);
 
                 String domain = mAutoCompleteDomain.getText().toString();

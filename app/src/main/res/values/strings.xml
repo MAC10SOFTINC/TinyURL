@@ -19,6 +19,10 @@
     <string name="owner_name">McCal M. Roberts (CEO)</string>
     <string name="owner_summary" translatable="false">Mac10Soft Inc.\nTel: 441-339-4011\nE-Mail: name_mac@hotmail.com\n#10 Bridgeview Lane, Somerset, Bermuda</string>
 
+    <string name="dev_title">Developer</string>
+    <string name="dev_name">Chandan Kumar Mandal</string>
+    <string name="dev_summary" translatable="false">Core developer\nchankruze@gmail.com\n</string>
+
     <string name="about_title">About</string>
     <string name="links_title">Links</string>
 
@@ -49,14 +53,14 @@
     <string name="str_share">share</string>
     <string name="str_copy">copy</string>
     <string name="str_shorten">shorten</string>
-    <string name="str_save_qr">save QR</string>
+<!--    <string name="str_save_qr">save QR</string>-->
 
     <string name="hint_delete">swipe any card LEFT (←) to delete it from history</string>
 
     <string name="str_stats">Enable statistics</string>
     <string name="str_btn_stats">statistics</string>
 
-    <string name="str_in_prog">Shortening ...</string>
+    <string name="str_in_progress">hold on ...</string>
     <string name="str_ready">Shorten</string>
     <string name="str_done">Done</string>
     <string name="str_def_domain">is.gd</string>

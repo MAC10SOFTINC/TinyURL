@@ -17,17 +17,29 @@
         android:summary="Restart the app to apply changes"/>
 
     <PreferenceCategory
-        android:key="developer_category"
+        android:key="owner"
         android:title="@string/owner_title">
 
         <Preference
             android:icon="@drawable/ic_developer"
             android:summary="@string/owner_summary"
             android:title="@string/owner_name">
+        </Preference>
 
-<!--            <intent-->
-<!--                android:action="android.intent.action.VIEW"-->
-<!--                android:data="https://github.com/chankruze" />-->
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="developer"
+        android:title="@string/dev_title">
+
+        <Preference
+            android:icon="@drawable/ic_developer"
+            android:summary="@string/dev_summary"
+            android:title="@string/dev_name">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="https://github.com/chankruze" />
         </Preference>
 
     </PreferenceCategory>

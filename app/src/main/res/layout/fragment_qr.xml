@@ -15,9 +15,8 @@
             android:id="@+id/iv_qr"
             android:layout_width="250dp"
             android:layout_height="250dp"
-
             android:layout_centerHorizontal="true"
-            android:background="@color/colorCardBg" />
+            android:background="@drawable/bg_qr" />
 
         <TextView
             android:id="@+id/tv_short_url"
@@ -27,22 +26,8 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:textSize="18sp"
-            tools:text="https://is.gd/5qHgQP" />
-
-
-<!--        <com.google.android.material.button.MaterialButton-->
-<!--            android:id="@+id/btn_save_qr"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_below="@id/tv_short_url"-->
-<!--            android:layout_centerHorizontal="true"-->
-<!--            android:layout_marginTop="8dp"-->
-<!--            android:layout_marginEnd="8dp"-->
-<!--            android:enabled="false"-->
-<!--            android:paddingTop="12dp"-->
-<!--            android:paddingBottom="12dp"-->
-<!--            android:text="@string/str_save_qr"-->
-<!--            app:icon="@drawable/ic_save" />-->
+            tools:text="https://is.gd/5qHgQP"
+            android:background="@drawable/bg_rounded"/>
 
         <!-- action buttons -->
         <LinearLayout

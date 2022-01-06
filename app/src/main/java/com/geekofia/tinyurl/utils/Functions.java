@@ -5,9 +5,14 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatDelegate;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
@@ -60,5 +65,18 @@ public class Functions {
         } else {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
+    }
+
+    public static void showStats(Activity activity, String shortURL) {
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+        browserIntent.setData(Uri.parse("https://" + shortURL.split("/")[2] + "/stats.php?url=" + shortURL.split("/")[3]));
+        activity.startActivity(browserIntent);
+    }
+
+    public static void showSnackBar(View view, String text) {
+        Snackbar snackbar = Snackbar.make(view, text, Snackbar.LENGTH_INDEFINITE);
+        snackbar.getView().setOnClickListener(v -> snackbar.dismiss());
+        snackbar.setTextColor(Color.RED);
+        snackbar.show();
     }
 }

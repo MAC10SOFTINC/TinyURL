@@ -23,6 +23,9 @@
     <color name="colorTransferSheetText">#FFFFFF</color>
 
     <color name="colorCardBg">#FFFFFF</color>
+    <color name="strokeBgButton">#2DE5D1</color>
 
     <color name="textColorHeading">#5E5F73</color>
+
+    <color name="roundedBg">#FAFAFA</color>
 </resources>

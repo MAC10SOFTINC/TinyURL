@@ -12,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,6 +24,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.geekofia.tinyurl.R;
 import com.geekofia.tinyurl.adapters.ShortUrlProfileAdapter;
 import com.geekofia.tinyurl.models.ShortUrlProfile;
@@ -31,6 +34,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import static com.geekofia.tinyurl.utils.Functions.clipURL;
 import static com.geekofia.tinyurl.utils.Functions.shareURL;
+import static com.geekofia.tinyurl.utils.Functions.showStats;
 
 public class HistoryFragment extends Fragment {
 
@@ -93,37 +97,30 @@ public class HistoryFragment extends Fragment {
             View view = inflater.inflate(R.layout.short_url_profile_click, null);
 
             // long url
-            TextInputEditText longUrl = view.findViewById(R.id.dialog_long_url);
-            longUrl.setText(profile.getLongUrl());
-            Button copyLong = view.findViewById(R.id.dialog_copy_long);
-            Button shareLong = view.findViewById(R.id.dialog_share_long);
+            TextView longUrl = view.findViewById(R.id.tv_long_url);
+            longUrl.setText(longURL);
 
-            copyLong.setOnClickListener(v -> clipURL(longURL, getActivity(), getContext()));
-            shareLong.setOnClickListener(v -> {
-                shareURL(longURL, getActivity());
-            });
+            // qr code
+            ImageView qrCodeView = view.findViewById(R.id.iv_qr);
+            Glide.with(this)
+                    .load("https://api.qrserver.com/v1/create-qr-code/?data=" + shortURL)
+                    .placeholder(R.drawable.ic_qr)
+                    .into(qrCodeView);
 
             // short url
-            TextInputEditText shortUrl = view.findViewById(R.id.dialog_short_url);
-            shortUrl.setText(profile.getShortUrl());
-            Button copyShort = view.findViewById(R.id.dialog_copy_short);
-            Button shareShort = view.findViewById(R.id.dialog_share_short);
+            TextView shortUrl = view.findViewById(R.id.tv_short_url);
+            shortUrl.setText(shortURL);
+            Button copyShort = view.findViewById(R.id.btn_copy);
+            Button shareShort = view.findViewById(R.id.btn_share);
 
             copyShort.setOnClickListener(v -> clipURL(shortURL, getActivity(), getContext()));
-            shareShort.setOnClickListener(v -> {
-                shareURL(shortURL, getActivity());
-            });
+            shareShort.setOnClickListener(v -> shareURL(shortURL, getActivity()));
 
             // stats button
-            MaterialButton statsButton = view.findViewById(R.id.btn_stats);
             if (statsEnabled) {
+                MaterialButton statsButton = view.findViewById(R.id.btn_stats);
                 statsButton.setVisibility(View.VISIBLE);
-                statsButton.setOnClickListener(v -> {
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + shortURL.split("/")[2] + "/stats.php?url=" + shortURL.split("/")[3]));
-                    startActivity(browserIntent);
-                });
-            } else {
-                statsButton.setVisibility(View.GONE);
+                statsButton.setOnClickListener(v -> showStats(requireActivity(), shortURL));
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

@@ -39,11 +39,12 @@ import static com.geekofia.tinyurl.utils.Functions.clipURL;
 import static com.geekofia.tinyurl.utils.Functions.initRetrofitIsGd;
 import static com.geekofia.tinyurl.utils.Functions.initRetrofitVGd;
 import static com.geekofia.tinyurl.utils.Functions.shareURL;
+import static com.geekofia.tinyurl.utils.Functions.showSnackBar;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
-    private TextInputEditText mEditTextLongURL, mEditTextShortURL, mEditTextCustomURL;
-    private MaterialButton buttonShorten, buttonShare, buttonCopy;
+    private TextInputEditText mEditTextLongURL, mEditTextCustomURL;
+    private MaterialButton buttonShorten;
     private ShortenApi shortenApiIsGd, shortenApiVGd;
     private String longUrl, shortUrl;
     private ShortUrlProfileRepo profileRepository;
@@ -73,13 +74,10 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     private void initViews(View view) {
         mEditTextLongURL = view.getRootView().findViewById(R.id.edit_text_long_url);
-//        mEditTextShortURL = view.getRootView().findViewById(R.id.edit_text_short_url);
         mAutoCompleteDomain = view.getRootView().findViewById(R.id.dropdown_custom_domain);
         mEditTextCustomURL = view.getRootView().findViewById(R.id.edit_text_custom_url);
         statsCheckBox = view.getRootView().findViewById(R.id.check_stats);
         buttonShorten = view.getRootView().findViewById(R.id.btn_shorten);
-//        buttonShare = view.getRootView().findViewById(R.id.btn_share);
-//        buttonCopy = view.getRootView().findViewById(R.id.btn_copy);
 
         mEditTextLongURL.addTextChangedListener(new TextWatcher() {
             @Override
@@ -89,10 +87,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                mEditTextShortURL.setText("");
-//                buttonShare.setEnabled(false);
-//                buttonCopy.setEnabled(false);
-
                 if (s.toString().trim().length() == 0) {
                     buttonShorten.setEnabled(false);
                     buttonShorten.setText(R.string.str_ready);
@@ -104,10 +98,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 if (url.startsWith("is.gd") || url.contains("https://is.gd") || url.contains("https://is.gd/") ||
                         url.startsWith("v.gd") || url.contains("https://v.gd") || url.contains("https://v.gd/")) {
                     buttonShorten.setEnabled(false);
-//                    buttonShare.setEnabled(false);
-//                    buttonCopy.setEnabled(false);
-
-//                    mEditTextShortURL.setText("Can't short our own urls");
+                    showSnackBar(getView(), "Can't short our own urls");
                 }
             }
 
@@ -138,7 +129,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     buttonShorten.setEnabled(true);
                 }
                 buttonShorten.setText(R.string.str_ready);
-//                mEditTextShortURL.setText("");
             }
         });
 
@@ -159,20 +149,17 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                     buttonShorten.setEnabled(true);
                 }
                 buttonShorten.setText(R.string.str_ready);
-//                mEditTextShortURL.setText("");
             }
         });
 
         buttonShorten.setOnClickListener(this);
-//        buttonShare.setOnClickListener(this);
-//        buttonCopy.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_shorten:
-                buttonShorten.setText(R.string.str_in_prog);
+                buttonShorten.setText(R.string.str_in_progress);
                 buttonShorten.setEnabled(false);
 
                 this.longUrl = mEditTextLongURL.getText().toString();
@@ -251,12 +238,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                         if (shortUrl != null) {
                             ShortUrlProfile shortUrlProfile = new ShortUrlProfile(shortUrl, longUrl, statsEnabled);
                             profileRepository.insert(shortUrlProfile);
-//                            mEditTextShortURL.setText(shortUrlProfile.getShortUrl());
-//                            buttonShorten.setText(R.string.str_done);
-//                            buttonShare.setEnabled(true);
-//                            buttonCopy.setEnabled(true);
 
-                            // TODO: Open success fragment
                             Bundle bundle = new Bundle();
                             bundle.putString("SHORT_URL", shortUrlProfile.getShortUrl());
 
@@ -269,11 +251,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                                     .commit();
                         } else {
                             buttonShorten.setText(R.string.str_ready);
-//                            mEditTextShortURL.setText("");
-                            Snackbar snackbar = Snackbar.make(getView(), response.body().getErrorMessage(), Snackbar.LENGTH_INDEFINITE);
-                            snackbar.getView().setOnClickListener(v -> snackbar.dismiss());
-                            snackbar.setTextColor(Color.RED);
-                            snackbar.show();
+                            // show snack bar
+                            showSnackBar(getView(), response.body().getErrorMessage());
                         }
                     }
                 } else {
