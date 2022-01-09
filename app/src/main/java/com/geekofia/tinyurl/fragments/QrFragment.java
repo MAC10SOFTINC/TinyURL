@@ -21,9 +21,9 @@ import com.google.android.material.button.MaterialButton;
 public class QrFragment extends Fragment implements View.OnClickListener {
 
     private ImageView qrCodeView;
-    private TextView shortUrlTextView;
+    private TextView longUrlTextView, shortUrlTextView;
     private MaterialButton buttonShare, buttonCopy;
-    private String shortUrl;
+    private String longUrl, shortUrl;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +31,7 @@ public class QrFragment extends Fragment implements View.OnClickListener {
         Bundle bundle = this.getArguments();
         if (bundle != null) {
             shortUrl = bundle.getString("SHORT_URL", "");
+            longUrl = bundle.getString("LONG_URL", "");
         }
     }
 
@@ -44,6 +45,7 @@ public class QrFragment extends Fragment implements View.OnClickListener {
 
     private void initViews(View view) {
         qrCodeView = view.getRootView().findViewById(R.id.iv_qr);
+        longUrlTextView = view.getRootView().findViewById(R.id.tv_long_url);
         shortUrlTextView = view.getRootView().findViewById(R.id.tv_short_url);
         buttonShare = view.getRootView().findViewById(R.id.btn_share);
         buttonShare.setOnClickListener(this);
@@ -57,6 +59,7 @@ public class QrFragment extends Fragment implements View.OnClickListener {
                     .placeholder(R.drawable.ic_qr)
                     .into(qrCodeView);
             shortUrlTextView.setText(shortUrl);
+            longUrlTextView.setText(longUrl);
             buttonShare.setEnabled(true);
             buttonCopy.setEnabled(true);
         }

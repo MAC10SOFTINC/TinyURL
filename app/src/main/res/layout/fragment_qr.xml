@@ -10,9 +10,20 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
+        <TextView
+            android:id="@+id/tv_long_url"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_rounded"
+            android:maxLines="3"
+            tools:text="nasty url" />
+
         <!-- qr code -->
         <ImageView
             android:id="@+id/iv_qr"
+            android:layout_below="@id/tv_long_url"
+            android:layout_marginTop="8dp"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_centerHorizontal="true"

@@ -6,11 +6,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CompoundButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.geekofia.tinyurl.R;
 import com.geekofia.tinyurl.interfaces.ShortenApi;
 import com.geekofia.tinyurl.models.ShortUrl;
@@ -19,6 +24,7 @@ import com.geekofia.tinyurl.repositories.ShortUrlProfileRepo;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
@@ -34,15 +40,18 @@ import static com.geekofia.tinyurl.utils.Functions.initRetrofitIsGd;
 import static com.geekofia.tinyurl.utils.Functions.initRetrofitVGd;
 import static com.geekofia.tinyurl.utils.Functions.shareURL;
 
-public class ShortenActivity extends AppCompatActivity implements View.OnClickListener {
-
-    private TextInputEditText mEditTextLongURL, mEditTextCustomURL;
-    private MaterialButton buttonShorten, buttonShare, buttonCopy;
-    private ShortenApi shortenApiIsGd, shortenApiVGd;
+public class ShortenActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
+    private ImageView mQrCodeView;
+    private TextView mTVLongURL, mTVShortURL;
+    private TextInputLayout mTextInputLayoutCustomURL;
+    private TextInputEditText mTextInputEditCustomURL;
+    private String mCustomURL;
+    private MaterialButton mButtonShorten, mButtonShare, mButtonCopy;
+    private ShortenApi shortenApiIsGd;
     private String longUrl, shortUrl;
     private ShortUrlProfileRepo profileRepository;
-    private MaterialCheckBox statsCheckBox;
-    private AutoCompleteTextView mAutoCompleteDomain;
+    private MaterialCheckBox mCheckBoxCustomURL, mCheckBoxStats;
+    private boolean isCustomURLChecked, isStatsChecked;
     private GsonConverterFactory gsonFactory = GsonConverterFactory.create();
     private OkHttpClient okHttpClient = new OkHttpClient();
 
@@ -51,161 +60,105 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shorten);
 
+        // get the share intent
         Intent receivedIntent = getIntent();
         String receivedType = receivedIntent.getType();
 
-        initViews();
-
         if (receivedType.startsWith("text/")) {
-            String longUrl = receivedIntent.getStringExtra(Intent.EXTRA_TEXT);
+            String data = receivedIntent.getStringExtra(Intent.EXTRA_TEXT);
 
-            if (longUrl != null) {
-                mEditTextLongURL.setText(longUrl);
+            if (data != null) {
+                this.longUrl = data;
                 Retrofit mRetrofitIsGd = initRetrofitIsGd(gsonFactory, okHttpClient);
-                Retrofit mRetrofitVGd = initRetrofitVGd(gsonFactory, okHttpClient);
                 shortenApiIsGd = mRetrofitIsGd.create(ShortenApi.class);
-                shortenApiVGd = mRetrofitVGd.create(ShortenApi.class);
             }
         }
 
         profileRepository = new ShortUrlProfileRepo(this.getApplication());
+
+        // initialize views
+        if (longUrl != null) {
+            initViews();
+        }
     }
 
     private void initViews() {
-        mEditTextLongURL = findViewById(R.id.input_url);
-        mAutoCompleteDomain = findViewById(R.id.custom_domain);
-        mEditTextCustomURL = findViewById(R.id.custom_url);
+        // find views
+        mQrCodeView = findViewById(R.id.iv_qr);
+        mTVLongURL = findViewById(R.id.tv_long_url);
+        mTVShortURL = findViewById(R.id.tv_short_url);
+        mTextInputLayoutCustomURL = findViewById(R.id.ti_custom_url);
+        mTextInputEditCustomURL = findViewById(R.id.tie_custom_url);
+        mButtonShorten = findViewById(R.id.btn_shorten);
+        mButtonShare = findViewById(R.id.btn_share);
+        mButtonCopy = findViewById(R.id.btn_copy);
+        mCheckBoxCustomURL = findViewById(R.id.cb_custom_url);
+        mCheckBoxStats = findViewById(R.id.cb_stats);
 
-        mEditTextLongURL.addTextChangedListener(new TextWatcher() {
+        // listeners
+        mButtonShorten.setOnClickListener(this);
+        mButtonShare.setOnClickListener(this);
+        mButtonCopy.setOnClickListener(this);
+        mCheckBoxCustomURL.setOnCheckedChangeListener(this);
+        mCheckBoxStats.setOnCheckedChangeListener(this);
+
+        mTextInputEditCustomURL.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
             }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                buttonShare.setEnabled(false);
-                buttonCopy.setEnabled(false);
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-                if (s.toString().trim().length() == 0) {
-                    buttonShorten.setEnabled(false);
-                    buttonShorten.setText(R.string.str_done);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                if (editable.length() > 5 && editable.length() < 30) {
+                    mCustomURL = editable.toString();
+                    mButtonShorten.setText(R.string.str_ready);
+                    mButtonShorten.setEnabled(true);
                 } else {
-                    buttonShorten.setEnabled(true);
-                }
-
-                String url = s.toString().trim();
-                if (url.startsWith("is.gd") || url.contains("https://is.gd") || url.contains("https://is.gd/")) {
-                    buttonShorten.setEnabled(false);
-                    statsCheckBox.setEnabled(false);
+                    mButtonShorten.setText(R.string.str_ready);
+                    mButtonShorten.setEnabled(false);
                 }
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
         });
 
-        // domain selection
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getBaseContext(), R.array.domains, android.R.layout.simple_spinner_dropdown_item);
-        mAutoCompleteDomain.setAdapter(adapter);
-
-        mAutoCompleteDomain.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                buttonShorten.setEnabled(true);
-                buttonShorten.setText(R.string.str_ready);
-            }
-        });
-
-        mEditTextCustomURL.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                buttonShorten.setEnabled(true);
-                buttonShorten.setText(R.string.str_ready);
-            }
-        });
-
-        statsCheckBox = findViewById(R.id.check_d_stats);
-        buttonShorten = findViewById(R.id.btn_d_shorten);
-        buttonShare = findViewById(R.id.btn_d_share);
-        buttonCopy = findViewById(R.id.btn_d_copy);
-
-        buttonShorten.setOnClickListener(this);
-        buttonShare.setOnClickListener(this);
-        buttonCopy.setOnClickListener(this);
+        // render data
+        mTVLongURL.setText(longUrl);
+        mButtonShorten.setEnabled(true);
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_d_shorten:
-                buttonShorten.setText(R.string.str_in_progress);
-                buttonShorten.setEnabled(false);
+        if (v.getId() == R.id.btn_shorten) {
+            mButtonShorten.setText(R.string.str_in_progress);
+            mButtonShorten.setEnabled(false);
 
-                String domain = mAutoCompleteDomain.getText().toString();
-                String customURL = mEditTextCustomURL.getText().toString();
-
-                if (domain.equals("is.gd")) {
-                    if (statsCheckBox.isChecked()) {
-                        if (customURL.isEmpty()) {
-                            getShortUrl(shortenApiIsGd, true, null);
-                        } else {
-                            getShortUrl(shortenApiIsGd, true, customURL);
-                        }
-                    } else {
-                        if (customURL.isEmpty()) {
-                            getShortUrl(shortenApiIsGd, false, null);
-                        } else {
-                            getShortUrl(shortenApiIsGd, false, customURL);
-                        }
-                    }
+            if (isStatsChecked) {
+                if (isCustomURLChecked && !mCustomURL.isEmpty()) {
+                    getShortUrl(shortenApiIsGd, true, mCustomURL);
                 } else {
-                    if (statsCheckBox.isChecked()) {
-                        if (customURL.isEmpty()) {
-                            getShortUrl(shortenApiVGd, true, null);
-                        } else {
-                            getShortUrl(shortenApiVGd, true, customURL);
-                        }
-                    } else {
-                        if (customURL.isEmpty()) {
-                            getShortUrl(shortenApiVGd, false, null);
-                        } else {
-                            getShortUrl(shortenApiVGd, false, customURL);
-                        }
-                    }
+                    getShortUrl(shortenApiIsGd, true, null);
                 }
+            } else {
+                if (isCustomURLChecked && !mCustomURL.isEmpty()) {
+                    getShortUrl(shortenApiIsGd, false, mCustomURL);
+                } else {
+                    getShortUrl(shortenApiIsGd, false, null);
+                }
+            }
 
-                break;
+        }
 
-            case R.id.btn_d_share:
-                shareURL(shortUrl, this);
-                break;
+        if (v.getId() == R.id.btn_share) {
+            shareURL(shortUrl, this);
+        }
 
-            case R.id.btn_d_copy:
-                clipURL(shortUrl, this, this);
-                break;
+        if (v.getId() == R.id.btn_copy) {
+            clipURL(shortUrl, this, this);
         }
     }
 
@@ -217,20 +170,16 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void getShortUrl(ShortenApi shortenApi, boolean statsEnabled, String customURL) {
-        if (longUrl == null) {
-            longUrl = Objects.requireNonNull(mEditTextLongURL.getText()).toString();
-        }
-
         Call<ShortUrl> shortUrlCall;
 
-        if (statsEnabled) {
-            if (customURL != null) {
+        if (isStatsChecked) {
+            if (isCustomURLChecked && !customURL.isEmpty()) {
                 shortUrlCall = shortenApi.getShortURLCustomStats("json", longUrl, customURL, 1);
             } else {
                 shortUrlCall = shortenApi.getShortURLStats("json", longUrl, 1);
             }
         } else {
-            if (customURL != null) {
+            if (isCustomURLChecked && !customURL.isEmpty()) {
                 shortUrlCall = shortenApi.getShortURLCustom("json", longUrl, customURL);
             } else {
                 shortUrlCall = shortenApi.getShortURL("json", longUrl);
@@ -247,18 +196,28 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
 
                         if (shortUrl != null) {
                             ShortUrlProfile shortUrlProfile = new ShortUrlProfile(shortUrl, longUrl, statsEnabled);
-                            mEditTextLongURL.setText(shortUrlProfile.getShortUrl());
-
-                            statsCheckBox.setVisibility(View.GONE);
-                            buttonShorten.setVisibility(View.GONE);
-                            buttonShare.setVisibility(View.VISIBLE);
-                            buttonCopy.setVisibility(View.VISIBLE);
-                            buttonShare.setEnabled(true);
-                            buttonCopy.setEnabled(true);
-
                             profileRepository.insert(shortUrlProfile);
+
+                            mTVShortURL.setVisibility(View.VISIBLE);
+                            mTVShortURL.setText(shortUrlProfile.getShortUrl());
+
+                            mQrCodeView.setVisibility(View.VISIBLE);
+                            Glide.with(getBaseContext())
+                                    .load("https://api.qrserver.com/v1/create-qr-code/?data=" + shortUrlProfile.getShortUrl())
+                                    .placeholder(R.drawable.ic_qr)
+                                    .into(mQrCodeView);
+
+                            mCheckBoxStats.setVisibility(View.GONE);
+                            mCheckBoxCustomURL.setVisibility(View.GONE);
+                            mTextInputLayoutCustomURL.setVisibility(View.GONE);
+                            mButtonShorten.setVisibility(View.GONE);
+
+                            mButtonShare.setVisibility(View.VISIBLE);
+                            mButtonShare.setEnabled(true);
+                            mButtonCopy.setVisibility(View.VISIBLE);
+                            mButtonCopy.setEnabled(true);
                         } else {
-                            buttonShorten.setText(R.string.str_ready);
+                            mButtonShorten.setText(R.string.str_ready);
                             Toast.makeText(getBaseContext(), response.body().getErrorMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
@@ -273,5 +232,22 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(getBaseContext(), "Throwable: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    @Override
+    public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+        if (compoundButton.getId() == R.id.cb_custom_url) {
+            if (isChecked) {
+                mTextInputLayoutCustomURL.setVisibility(View.VISIBLE);
+                isCustomURLChecked = true;
+            } else {
+                mTextInputLayoutCustomURL.setVisibility(View.GONE);
+                isCustomURLChecked = false;
+            }
+        }
+
+        if (compoundButton.getId() == R.id.cb_stats) {
+            isStatsChecked = isChecked;
+        }
     }
 }

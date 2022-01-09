@@ -1,124 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:orientation="vertical"
     android:padding="16dp">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/layout_text_input"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="match_parent"
+    <!-- long url -->
+    <TextView
+        android:id="@+id/tv_long_url"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        app:endIconMode="none">
+        android:layout_gravity="center"
+        android:background="@drawable/bg_rounded"
+        android:maxLines="3"
+        tools:text="nasty url" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/input_url"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:focusable="false" />
-    </com.google.android.material.textfield.TextInputLayout>
+    <!-- qr code -->
+    <ImageView
+        android:id="@+id/iv_qr"
+        android:layout_marginTop="8dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_qr"
+        android:visibility="gone"/>
 
-    <!-- Input Custom URL -->
+    <TextView
+        android:id="@+id/tv_short_url"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="8dp"
+        android:textSize="18sp"
+        tools:text="https://is.gd/5qHgQP"
+        android:background="@drawable/bg_rounded"
+        android:visibility="gone"/>
+
+
     <LinearLayout
         android:id="@+id/layout_domain_setting"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
-        android:orientation="vertical"
-        android:layout_below="@id/layout_text_input">
+        android:orientation="vertical">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/dropdown_domain"
-            android:layout_width="match_parent"
+        <!-- use custom url checkbox -->
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_custom_url"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            app:helperText="@string/hint_domain_dropdown">
+            android:text="@string/str_cb_custom_url" />
 
-            <AutoCompleteTextView
-                android:id="@+id/custom_domain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:editable="false"
-                android:text="@string/str_def_domain"
-                android:focusable="false"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
+        <!-- custom url input -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/ti_custom_url"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hint_custom_url"
-            app:endIconMode="clear_text"
-            app:helperText="@string/helper_custom_url"
-            android:layout_marginTop="8dp"
-            app:helperTextEnabled="true"
+            android:visibility="gone"
             app:counterEnabled="true"
             app:counterMaxLength="30"
-            android:layout_toEndOf="@id/dropdown_domain"
+            app:endIconMode="clear_text"
+            app:helperText="@string/helper_custom_url"
+            app:helperTextEnabled="true"
             app:hintEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/custom_url"
+                android:id="@+id/tie_custom_url"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:maxLines="3"
                 android:digits="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_"
-                android:maxLength="30"/>
+                android:maxLength="30"
+                android:maxLines="3" />
+
         </com.google.android.material.textfield.TextInputLayout>
+
+        <!--  enable statistics -->
+        <com.google.android.material.checkbox.MaterialCheckBox
+            android:id="@+id/cb_stats"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_stats" />
+
     </LinearLayout>
 
-
-    <com.google.android.material.checkbox.MaterialCheckBox
-        android:id="@+id/check_d_stats"
-        android:layout_width="wrap_content"
+    <!-- action buttons (shorten, share & copy) -->
+    <LinearLayout
+        android:id="@+id/rl_share_setting"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layout_domain_setting"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:text="@string/str_stats" />
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_d_shorten"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout_domain_setting"
-        android:layout_alignParentEnd="true"
-        android:enabled="false"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:text="@string/str_shorten"
-        app:icon="@drawable/ic_shorten" />
+        <!-- shorten button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_shorten"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/str_shorten"
+            app:icon="@drawable/ic_shorten" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_d_share"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout_domain_setting"
-        android:layout_alignParentEnd="true"
-        android:enabled="false"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:text="@string/str_share"
-        android:visibility="gone"
-        app:icon="@drawable/ic_share" />
+        <!-- share button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:enabled="false"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/str_share"
+            android:visibility="gone"
+            app:icon="@drawable/ic_share" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_d_copy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/layout_domain_setting"
-        android:layout_marginEnd="16dp"
-        android:layout_toStartOf="@id/btn_d_share"
-        android:enabled="false"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        android:text="@string/str_copy"
-        android:visibility="gone"
-        app:icon="@drawable/ic_copy" />
+        <!-- copy button -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_copy"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:enabled="false"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="@string/str_copy"
+            android:visibility="gone"
+            app:icon="@drawable/ic_copy" />
+    </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

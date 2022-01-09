@@ -117,10 +117,13 @@ public class HistoryFragment extends Fragment {
             shareShort.setOnClickListener(v -> shareURL(shortURL, getActivity()));
 
             // stats button
+            MaterialButton statsButton = view.findViewById(R.id.btn_stats);
+
             if (statsEnabled) {
-                MaterialButton statsButton = view.findViewById(R.id.btn_stats);
                 statsButton.setVisibility(View.VISIBLE);
                 statsButton.setOnClickListener(v -> showStats(requireActivity(), shortURL));
+            } else  {
+                statsButton.setVisibility(View.GONE);
             }
 
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext());

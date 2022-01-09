@@ -11,10 +11,10 @@
         android:title="Version Code" />
 
     <SwitchPreference
-        android:key="dark_theme"
-        android:title="Dark Theme"
         android:defaultValue="false"
-        android:summary="Restart the app to apply changes"/>
+        android:key="dark_theme"
+        android:summary="Restart the app to apply changes"
+        android:title="Dark Theme" />
 
     <PreferenceCategory
         android:key="owner"
@@ -23,8 +23,7 @@
         <Preference
             android:icon="@drawable/ic_developer"
             android:summary="@string/owner_summary"
-            android:title="@string/owner_name">
-        </Preference>
+            android:title="@string/owner_name"></Preference>
 
     </PreferenceCategory>
 
@@ -48,37 +47,37 @@
         android:key="links"
         android:title="@string/links_title">
 
-        <Preference
-            android:icon="@drawable/ic_announcements"
-            android:key="announcements"
-            android:summary="@string/announcements_summary"
-            android:title="@string/announcements_title">
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="@string/announcements_channel" />
-        </Preference>
+<!--        <Preference-->
+<!--            android:icon="@drawable/ic_announcements"-->
+<!--            android:key="announcements"-->
+<!--            android:summary="@string/announcements_summary"-->
+<!--            android:title="@string/announcements_title">-->
+<!--            <intent-->
+<!--                android:action="android.intent.action.VIEW"-->
+<!--                android:data="@string/announcements_channel" />-->
+<!--        </Preference>-->
 
-        <Preference
-            android:icon="@drawable/ic_telegram"
-            android:key="telegram"
-            android:summary="@string/telegram_summary"
-            android:title="@string/telegram_title">
+<!--        <Preference-->
+<!--            android:icon="@drawable/ic_telegram"-->
+<!--            android:key="telegram"-->
+<!--            android:summary="@string/telegram_summary"-->
+<!--            android:title="@string/telegram_title">-->
 
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="@string/telegram_group" />
-        </Preference>
+<!--            <intent-->
+<!--                android:action="android.intent.action.VIEW"-->
+<!--                android:data="@string/telegram_group" />-->
+<!--        </Preference>-->
 
-        <Preference
-            android:icon="@drawable/ic_discord"
-            android:key="discord"
-            android:summary="@string/discord_summary"
-            android:title="@string/discord_title">
+<!--        <Preference-->
+<!--            android:icon="@drawable/ic_discord"-->
+<!--            android:key="discord"-->
+<!--            android:summary="@string/discord_summary"-->
+<!--            android:title="@string/discord_title">-->
 
-            <intent
-                android:action="android.intent.action.VIEW"
-                android:data="@string/discord_invite" />
-        </Preference>
+<!--            <intent-->
+<!--                android:action="android.intent.action.VIEW"-->
+<!--                android:data="@string/discord_invite" />-->
+<!--        </Preference>-->
 
         <Preference
             android:icon="@drawable/ic_website"
@@ -89,6 +88,17 @@
             <intent
                 android:action="android.intent.action.VIEW"
                 android:data="@string/website_url" />
+        </Preference>
+
+        <Preference
+            android:icon="@drawable/ic_privacy"
+            android:key="website"
+            android:summary="@string/privacy_policy_summary"
+            android:title="@string/privacy_policy_title">
+
+            <intent
+                android:action="android.intent.action.VIEW"
+                android:data="@string/privacy_policy_url" />
         </Preference>
 
         <Preference

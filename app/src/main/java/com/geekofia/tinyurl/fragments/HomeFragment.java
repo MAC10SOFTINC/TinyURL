@@ -95,6 +95,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 }
 
                 String url = s.toString().trim();
+
                 if (url.startsWith("is.gd") || url.contains("https://is.gd") || url.contains("https://is.gd/") ||
                         url.startsWith("v.gd") || url.contains("https://v.gd") || url.contains("https://v.gd/")) {
                     buttonShorten.setEnabled(false);
@@ -241,6 +242,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
                             Bundle bundle = new Bundle();
                             bundle.putString("SHORT_URL", shortUrlProfile.getShortUrl());
+                            bundle.putString("LONG_URL", shortUrlProfile.getLongUrl());
 
                             QrFragment qrFragment = new QrFragment();
                             qrFragment.setArguments(bundle);
