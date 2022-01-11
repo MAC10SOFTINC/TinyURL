@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Mac10Shorturl</string>
+    <string name="app_name">TinyURL</string>
 
     <string name="helper_long_url">Long URL</string>
     <string name="helper_custom_url">Can only contain alphanumeric characters [A-Z, a-z, 0-9] and underscores [_]</string>
@@ -21,7 +21,7 @@
 
     <string name="dev_title">Developer</string>
     <string name="dev_name">Chandan Kumar Mandal</string>
-    <string name="dev_summary" translatable="false">Core developer\nchankruze@gmail.com\n</string>
+    <string name="dev_summary" translatable="false">Core Developer\nchankruze@gmail.com\n</string>
 
     <string name="about_title">About</string>
     <string name="links_title">Links</string>
