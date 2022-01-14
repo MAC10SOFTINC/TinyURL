@@ -5,21 +5,21 @@ import com.google.gson.annotations.SerializedName;
 public class ShortUrl extends ErrorResponse {
 
     @SerializedName("shorturl")
-    private String url;
+    private String shorturl;
 
     public ShortUrl(int errorCode, String errorMessage,  String shortenedURL) {
         super(errorCode, errorMessage);
-        this.url = shortenedURL;
+        this.shorturl = shortenedURL;
     }
 
     public String getShortenedURL() {
-        return url;
+        return shorturl;
     }
 
     @Override
     public String toString() {
         return "ShortUrlProfile{" +
-                "url='" + url + '\'' +
+                "url='" + shorturl + '\'' +
                 '}';
     }
 }

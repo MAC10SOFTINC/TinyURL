@@ -5,29 +5,29 @@ import com.google.gson.annotations.SerializedName;
 public class ErrorResponse {
 
     @SerializedName("errorcode")
-    private int errorCode;
+    private int errorcode;
 
     @SerializedName("errormessage")
-    private String errorMessage;
+    private String errormessage;
 
     public ErrorResponse(int errorCode, String errorMessage) {
-        this.errorCode = errorCode;
-        this.errorMessage = errorMessage;
+        this.errorcode = errorCode;
+        this.errormessage = errorMessage;
     }
 
     public int getErrorCode() {
-        return errorCode;
+        return errorcode;
     }
 
     public String getErrorMessage() {
-        return errorMessage;
+        return errormessage;
     }
 
     @Override
     public String toString() {
         return "errorResponse{" +
-                "errorCode='" + errorCode + '\'' +
-                ", errorMessage='" + errorMessage + '\'' +
+                "errorCode='" + errorcode + '\'' +
+                ", errorMessage='" + errormessage + '\'' +
                 '}';
     }
 }

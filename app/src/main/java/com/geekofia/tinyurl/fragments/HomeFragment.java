@@ -1,7 +1,6 @@
 package com.geekofia.tinyurl.fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,7 +22,6 @@ import com.geekofia.tinyurl.models.ShortUrlProfile;
 import com.geekofia.tinyurl.repositories.ShortUrlProfileRepo;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.Objects;
@@ -89,6 +87,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() == 0) {
                     buttonShorten.setEnabled(false);
+                    buttonShorten.setText("Shorten");
                     buttonShorten.setText(R.string.str_ready);
                 } else {
                     buttonShorten.setEnabled(true);

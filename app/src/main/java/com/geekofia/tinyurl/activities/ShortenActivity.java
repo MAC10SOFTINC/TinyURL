@@ -162,13 +162,6 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    private Retrofit initRetrofit() {
-        return new Retrofit.Builder()
-                .baseUrl("https://is.gd/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-    }
-
     private void getShortUrl(ShortenApi shortenApi, boolean statsEnabled, String customURL) {
         Call<ShortUrl> shortUrlCall;
 
