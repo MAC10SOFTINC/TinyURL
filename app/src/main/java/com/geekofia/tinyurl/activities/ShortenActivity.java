@@ -42,9 +42,8 @@ import static com.geekofia.tinyurl.utils.Functions.shareURL;
 
 public class ShortenActivity extends AppCompatActivity implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
     private ImageView mQrCodeView;
-    private TextView mTVLongURL, mTVShortURL;
+    private TextView mTVShortURL;
     private TextInputLayout mTextInputLayoutCustomURL;
-    private TextInputEditText mTextInputEditCustomURL;
     private String mCustomURL;
     private MaterialButton mButtonShorten, mButtonShare, mButtonCopy;
     private ShortenApi shortenApiIsGd;
@@ -52,8 +51,8 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
     private ShortUrlProfileRepo profileRepository;
     private MaterialCheckBox mCheckBoxCustomURL, mCheckBoxStats;
     private boolean isCustomURLChecked, isStatsChecked;
-    private GsonConverterFactory gsonFactory = GsonConverterFactory.create();
-    private OkHttpClient okHttpClient = new OkHttpClient();
+    private final GsonConverterFactory gsonFactory = GsonConverterFactory.create();
+    private final OkHttpClient okHttpClient = new OkHttpClient();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,10 +84,10 @@ public class ShortenActivity extends AppCompatActivity implements View.OnClickLi
     private void initViews() {
         // find views
         mQrCodeView = findViewById(R.id.iv_qr);
-        mTVLongURL = findViewById(R.id.tv_long_url);
+        TextView mTVLongURL = findViewById(R.id.tv_long_url);
         mTVShortURL = findViewById(R.id.tv_short_url);
         mTextInputLayoutCustomURL = findViewById(R.id.ti_custom_url);
-        mTextInputEditCustomURL = findViewById(R.id.tie_custom_url);
+        TextInputEditText mTextInputEditCustomURL = findViewById(R.id.tie_custom_url);
         mButtonShorten = findViewById(R.id.btn_shorten);
         mButtonShare = findViewById(R.id.btn_share);
         mButtonCopy = findViewById(R.id.btn_copy);

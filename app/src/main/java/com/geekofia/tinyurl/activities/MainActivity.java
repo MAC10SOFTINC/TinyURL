@@ -22,6 +22,8 @@ import hotchemi.android.rate.AppRate;
 
 import static com.geekofia.tinyurl.utils.Functions.updateTheme;
 
+import java.util.Objects;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String HOME_FRAGMENT = "HOME_FRAGMENT";
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         boolean isDarkEnabled = sharedPreferences.getBoolean("dark_theme", false);

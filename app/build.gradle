@@ -1,14 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion '30.0.2'
     defaultConfig {
         applicationId "com.geekofia.tinyurl"
+        compileSdk 34
         minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 40
-        versionName "7.0.2"
+        targetSdkVersion 34
+        versionCode 41
+        versionName "7.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -23,8 +22,9 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    namespace 'com.geekofia.tinyurl'
 
-    applicationVariants.all { variant ->
+    applicationVariants.configureEach { variant ->
         variant.resValue "string", "versionName", variant.versionName
         variant.resValue "string", "versionCode", String.valueOf(variant.versionCode)
     }
